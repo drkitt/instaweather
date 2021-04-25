@@ -1,3 +1,9 @@
+/*
+Contains the code to be ran directly on the watch while the app is in focus
+*/
+
+/* Included files */
+// Standard Pebble functions and types
 #include <pebble.h>
 
 /* Static variables */
