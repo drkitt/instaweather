@@ -12,6 +12,63 @@ static Window *s_window;
 // Displays the temperature
 static TextLayer *s_temp_layer;
 
+/* Prototypes */
+// Initializes the app
+static void init(void);
+// Cleans up after the app
+static void deinit(void);
+// Callback for loading the app's main window
+static void main_window_load(Window *window);
+// Callback for unloading the app's main window
+static void main_window_unload(Window *window);
+
+/*
+Main entry point for the app
+*/
+int main(void) {
+    init();
+
+    APP_LOG(
+        APP_LOG_LEVEL_DEBUG,
+        "Done initializing, pushed window: %p",
+        s_window
+    );
+
+    app_event_loop();
+    deinit();
+}
+
+/*
+Initializes the app by creating the main window and starting the background
+worker
+*/
+static void init(void) {
+    // Create the main window
+    s_window = window_create();
+    window_set_window_handlers(s_window, (WindowHandlers) {
+        .load = main_window_load,
+        .unload = main_window_unload,
+    });
+    const bool animated = true;
+    window_stack_push(s_window, animated);
+
+    // Start the background worker if it's not running already
+    AppWorkerResult result = app_worker_launch();
+    APP_LOG(
+        APP_LOG_LEVEL_DEBUG,
+        "Background worker launch returned value %d",
+        result
+    );
+}
+
+/*
+Deinitializes the app by destroying the main window
+*/
+static void deinit(void) {
+    window_destroy(s_window);
+}
+
+
 /*
 Called when the app's main window loads
 
@@ -41,46 +98,4 @@ Parameters:
 */
 static void main_window_unload(Window *window) {
     text_layer_destroy(s_temp_layer);
-}
-
-/*
-Initializes the app by creating the main window and starting the background
-worker
-*/
-static void init(void) {
-    // Create the main window
-    s_window = window_create();
-    window_set_window_handlers(s_window, (WindowHandlers) {
-        .load = main_window_load,
-        .unload = main_window_unload,
-    });
-    const bool animated = true;
-    window_stack_push(s_window, animated);
-    
-    // Start the background worker if it's not running already
-    AppWorkerResult result = app_worker_launch();
-    APP_LOG(
-        APP_LOG_LEVEL_DEBUG,
-        "Background worker launch returned value %d",
-        result
-    );
-}
-
-/* Initializes the app by creating the main window */
-static void deinit(void) {
-    window_destroy(s_window);
-}
-
-/* Main entry point for the app */
-int main(void) {
-    init();
-
-    APP_LOG(
-        APP_LOG_LEVEL_DEBUG,
-        "Done initializing, pushed window: %p",
-        s_window
-    );
-
-    app_event_loop();
-    deinit();
 }
