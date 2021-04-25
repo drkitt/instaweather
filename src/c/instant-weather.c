@@ -1,60 +1,64 @@
 #include <pebble.h>
 
+/* Static variables */
+// Displays the entire app
 static Window *s_window;
-static TextLayer *s_text_layer;
+// Displays the temperature
+static TextLayer *s_temp_layer;
 
-static void prv_select_click_handler(ClickRecognizerRef recognizer, void *context) {
-  text_layer_set_text(s_text_layer, "Select");
+/*
+Called when the app's main window loads
+
+Parameters:
+    window: Pointer to the window-to-be
+*/
+static void main_window_load(Window *window) {
+    /* Local variables */
+    // The window's main layer. Other elements (text, images, etc.) will have
+    // their own layers that are children of this one.
+    Layer *window_layer = window_get_root_layer(window);
+    // The main layer's bounds
+    GRect bounds = layer_get_bounds(window_layer);
+
+    // Set up temperature display
+    s_temp_layer = text_layer_create(GRect(0, 72, bounds.size.w, 20));
+    text_layer_set_text(s_temp_layer, "Hello world!");
+    text_layer_set_text_alignment(s_temp_layer, GTextAlignmentCenter);
+    layer_add_child(window_layer, text_layer_get_layer(s_temp_layer));
 }
 
-static void prv_up_click_handler(ClickRecognizerRef recognizer, void *context) {
-  text_layer_set_text(s_text_layer, "Up");
+/*
+Called when the app's main window unloads
+
+Parameters:
+    window: Pointer to the window-to-not-be
+*/
+static void main_window_unload(Window *window) {
+    text_layer_destroy(s_temp_layer);
 }
 
-static void prv_down_click_handler(ClickRecognizerRef recognizer, void *context) {
-  text_layer_set_text(s_text_layer, "Down");
+/* Initializes the app by creating the main window */
+static void init(void) {
+    s_window = window_create();
+    window_set_window_handlers(s_window, (WindowHandlers) {
+        .load = main_window_load,
+        .unload = main_window_unload,
+    });
+    const bool animated = true;
+    window_stack_push(s_window, animated);
 }
 
-static void prv_click_config_provider(void *context) {
-  window_single_click_subscribe(BUTTON_ID_SELECT, prv_select_click_handler);
-  window_single_click_subscribe(BUTTON_ID_UP, prv_up_click_handler);
-  window_single_click_subscribe(BUTTON_ID_DOWN, prv_down_click_handler);
+/* Initializes the app by creating the main window */
+static void deinit(void) {
+    window_destroy(s_window);
 }
 
-static void prv_window_load(Window *window) {
-  Layer *window_layer = window_get_root_layer(window);
-  GRect bounds = layer_get_bounds(window_layer);
-
-  s_text_layer = text_layer_create(GRect(0, 72, bounds.size.w, 20));
-  text_layer_set_text(s_text_layer, "Press a button");
-  text_layer_set_text_alignment(s_text_layer, GTextAlignmentCenter);
-  layer_add_child(window_layer, text_layer_get_layer(s_text_layer));
-}
-
-static void prv_window_unload(Window *window) {
-  text_layer_destroy(s_text_layer);
-}
-
-static void prv_init(void) {
-  s_window = window_create();
-  window_set_click_config_provider(s_window, prv_click_config_provider);
-  window_set_window_handlers(s_window, (WindowHandlers) {
-    .load = prv_window_load,
-    .unload = prv_window_unload,
-  });
-  const bool animated = true;
-  window_stack_push(s_window, animated);
-}
-
-static void prv_deinit(void) {
-  window_destroy(s_window);
-}
-
+/* Main entry point for the app */
 int main(void) {
-  prv_init();
+    init();
 
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Done initializing, pushed window: %p", s_window);
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "Done initializing, pushed window: %p", s_window);
 
-  app_event_loop();
-  prv_deinit();
+    app_event_loop();
+    deinit();
 }
