@@ -50,3 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Pebble Build Files
+.lock-waf_linux2_build
+build/
