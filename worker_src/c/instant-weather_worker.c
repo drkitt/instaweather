@@ -18,6 +18,7 @@ interface):
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
 {
     APP_LOG(APP_LOG_LEVEL_DEBUG, "hey what's up it's the background worker");
+    worker_launch_app();
 }
 
 /* Initializes the worker */

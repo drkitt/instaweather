@@ -48,6 +48,13 @@ Initializes the app by creating the main window and starting the background
 worker
 */
 static void init(void) {
+    if (launch_reason() == APP_LAUNCH_WORKER) {
+        APP_LOG(APP_LOG_LEVEL_DEBUG, "Launched by worker");
+    }
+    else {
+        APP_LOG(APP_LOG_LEVEL_DEBUG, "Launched somehow else");
+    }
+
     // Create the main window
     s_window = window_create();
     window_set_window_handlers(s_window, (WindowHandlers) {
