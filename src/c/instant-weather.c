@@ -5,6 +5,8 @@ Contains the code to be ran directly on the watch while the app is in focus
 /* Included files */
 // Standard Pebble functions and types
 #include <pebble.h>
+// Weather-related functionality
+#include "weather.h"
 
 /* Static variables */
 // Displays the entire app
@@ -59,6 +61,8 @@ static void init(void) {
         "Background worker launch returned value %d",
         result
     );
+
+    weather_init();
 }
 
 /*
@@ -66,6 +70,7 @@ Deinitializes the app by destroying the main window
 */
 static void deinit(void) {
     window_destroy(s_window);
+    weather_deinit();
 }
 
 
