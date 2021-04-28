@@ -68,6 +68,28 @@ Parameters:
 static void inbox_received_callback(
     DictionaryIterator *iterator, void *context) {
 
+    /* Local variables */
+    // String containing the termperature
+    static char temperature_buffer[8];
+    // String containing the weather conditions
+    static char conditions_buffer[32];
+    // Dictionary entry for the temperature
+    Tuple *temperature_tuple;
+    // Dictionary entry for the weather conditions
+    Tuple *conditions_tuple;
+
+    // Use the given iterator to load the data from the dictionary to the tuples
+    temperature_tuple = dict_find(iterator, MESSAGE_KEY_TEMPERATURE);
+    conditions_tuple = dict_find(iterator, MESSAGE_KEY_CONDITIONS);
+
+    // If all data is available, use it
+    if (temperature_tuple && conditions_tuple) {
+        snprintf(temperature_buffer, sizeof(temperature_buffer), "%d", (int)temperature_tuple->value->int32);
+        snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
+    }
+
+    // Assemble full string and display
+    APP_LOG(APP_LOG_LEVEL_INFO, "%s %s", temperature_buffer, conditions_buffer);
 }
 
 /*
