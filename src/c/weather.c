@@ -67,7 +67,6 @@ Parameters:
 */
 static void inbox_received_callback(
     DictionaryIterator *iterator, void *context) {
-
     /* Local variables */
     // String containing the termperature
     static char temperature_buffer[8];
