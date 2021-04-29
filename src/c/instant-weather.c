@@ -88,11 +88,8 @@ Parameters:
     window: Pointer to the window-to-be
 */
 static void main_window_load(Window *window) {
-    /* Local variables */
-    // The window's main layer. Other elements (text, images, etc.) will have
-    // their own layers that are children of this one.
+    // Get the main layer's boundsf
     Layer *window_layer = window_get_root_layer(window);
-    // The main layer's bounds
     GRect bounds = layer_get_bounds(window_layer);
 
     // Set up temperature display
