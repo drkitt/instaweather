@@ -69,8 +69,8 @@ static void inbox_received_callback(
     DictionaryIterator *iterator, void *context) {
 
     // Use the given iterator to load the data from the dictionary to the tuples
-    Tuple *temperature_tuple = dict_find(iterator, MESSAGE_KEY_TEMPERATURE);
-    Tuple *conditions_tuple = dict_find(iterator, MESSAGE_KEY_CONDITIONS);
+    const Tuple *temperature_tuple = dict_find(iterator, MESSAGE_KEY_TEMPERATURE);
+    const Tuple *conditions_tuple = dict_find(iterator, MESSAGE_KEY_CONDITIONS);
 
     // If all data is available, store it
     if (temperature_tuple && conditions_tuple) {

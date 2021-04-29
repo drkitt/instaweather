@@ -62,7 +62,7 @@ static void init(void) {
     window_stack_push(s_window, animated);
 
     // Start the background worker if it's not running already
-    AppWorkerResult result = app_worker_launch();
+    const AppWorkerResult result = app_worker_launch();
     APP_LOG(
         APP_LOG_LEVEL_DEBUG,
         "Background worker launch returned value %d",
@@ -90,7 +90,7 @@ Parameters:
 static void main_window_load(Window *window) {
     // Get the main layer's boundsf
     Layer *window_layer = window_get_root_layer(window);
-    GRect bounds = layer_get_bounds(window_layer);
+    const GRect bounds = layer_get_bounds(window_layer);
 
     // Set up temperature display
     s_temp_layer = text_layer_create(GRect(0, 72, bounds.size.w, 20));
