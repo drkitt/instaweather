@@ -8,6 +8,15 @@ Contains the weather module's implementation
 // Pebble standard library
 #include "pebble.h"
 
+/* Constants */
+// Key to read and write the temperature in persistent storage
+#define TEMPERATURE_KEY 0
+// Key to access the weather conditions in peristent storage
+#define CONDITIONS_KEY 1
+// How many characters the conditions buffer can contain (including the null
+// terminator)
+#define CONDITIONS_BUFFER_SIZE 32
+
 /* Static prototypes */
 // Callback for receiving an AppMessage
 static void inbox_received_callback(
@@ -69,16 +78,27 @@ static void inbox_received_callback(
     DictionaryIterator *iterator, void *context) {
 
     // Use the given iterator to load the data from the dictionary to the tuples
-    const Tuple *temperature_tuple = dict_find(iterator, MESSAGE_KEY_TEMPERATURE);
-    const Tuple *conditions_tuple = dict_find(iterator, MESSAGE_KEY_CONDITIONS);
+    const Tuple *temperature_tuple = dict_find(
+        iterator, MESSAGE_KEY_TEMPERATURE);
+    const Tuple *conditions_tuple = dict_find(
+        iterator, MESSAGE_KEY_CONDITIONS);
 
     // If all data is available, store it
     if (temperature_tuple && conditions_tuple) {
+        // Temperature
         const int temperature = (int)temperature_tuple->value->int32;
-        static char conditions_buffer[32];
-        snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
+        persist_write_int(TEMPERATURE_KEY, temperature)
 
-        APP_LOG(APP_LOG_LEVEL_INFO, "%d %s", temperature, conditions_buffer);
+        // Conditions
+        static char conditions_buffer[CONDITIONS_BUFFER_SIZE];
+        snprintf(
+            conditions_buffer,
+            sizeof(conditions_buffer),
+            "%s",
+            conditions_tuple->value->cstring
+        );
+        persist_write_string(
+            CONDITIONS_KEY, conditions_buffer, CONDITIONS_BUFFER_SIZE);
     }
 }
 
