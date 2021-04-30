@@ -59,30 +59,5 @@ interface):
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
     APP_LOG(APP_LOG_LEVEL_DEBUG, "hey what's up it's the background worker");
 
-    if (persist_exists(0)) {
-        counter = persist_read_int(0);
-    }
-    else {
-        APP_LOG(APP_LOG_LEVEL_DEBUG, "No persistent data for counter found");
-    }
-    APP_LOG(APP_LOG_LEVEL_DEBUG, "%d", counter);
-    counter++;
-    persist_write_int(0, counter);
-
-    test = malloc(sizeof(test_struct));
-    if (persist_exists(1)) {
-        APP_LOG(APP_LOG_LEVEL_DEBUG, "Reading struct (current value: %d, %d)", test->incrementer, test->decrementer);
-        persist_read_data(1, test, sizeof(test_struct));
-    }
-    else {
-        APP_LOG(APP_LOG_LEVEL_DEBUG, "No persistent data for test_struct found");
-        test->incrementer = 0;
-        test->decrementer = 0;
-    }
-    APP_LOG(APP_LOG_LEVEL_DEBUG, "%d, %d", test->incrementer, test->decrementer);
-    test->incrementer++;
-    test->decrementer--;
-    persist_write_data(1, test, sizeof(test_struct));
-    
     worker_launch_app();
 }
