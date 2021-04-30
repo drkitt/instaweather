@@ -8,11 +8,6 @@ Contains the weather module's implementation
 // Pebble standard library
 #include "pebble.h"
 
-/* Constants */
-// How many characters the conditions buffer can contain (including the null
-// terminator)
-#define CONDITIONS_BUFFER_SIZE 32
-
 /* Static prototypes */
 // Callback for receiving an AppMessage
 static void inbox_received_callback(

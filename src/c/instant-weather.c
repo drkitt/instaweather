@@ -57,11 +57,21 @@ static void init(void) {
         APP_LOG(APP_LOG_LEVEL_DEBUG, "Launched by worker");
     }
     else {
-        // If the app was launched by the user, display the weather :)
+        // If the app was launched by the user, just display the weather :)
         APP_LOG(APP_LOG_LEVEL_DEBUG, "Launched somehow else");
 
-        if (persist_exists(TEMPERATURE_KEY)) {
+        if (persist_exists(TEMPERATURE_KEY) && persist_exists(CONDITIONS_KEY)) {
             APP_LOG(APP_LOG_LEVEL_DEBUG, "Weather exists");
+            int temperature = persist_read_int(TEMPERATURE_KEY);
+            char conditions_buffer[CONDITIONS_BUFFER_SIZE];
+            persist_read_string(
+                CONDITIONS_KEY, conditions_buffer, CONDITIONS_BUFFER_SIZE);
+            APP_LOG(
+                APP_LOG_LEVEL_DEBUG,
+                "Temperature is %d and conditions are %s. Isn't that neat?",
+                temperature,
+                conditions_buffer
+            );
         }
         else {
             APP_LOG(APP_LOG_LEVEL_DEBUG, "Weather exists... not!");
