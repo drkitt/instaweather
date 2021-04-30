@@ -7,9 +7,16 @@ if there's no weather info saved.
 
 #ifndef WEATHER_H
 #define WEATHER_H
+
 /* Included files */
 // Boolean type
 #include <stdbool.h>
+
+/* Constants */
+// Key to read and write the temperature in persistent storage
+#define TEMPERATURE_KEY 0
+// Key to access the weather conditions in peristent storage
+#define CONDITIONS_KEY 1
 
 /* Prototypes */
 // Sets up the weather module

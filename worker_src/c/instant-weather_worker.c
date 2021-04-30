@@ -7,14 +7,6 @@ weather
 // Functions and types for background workers
 #include <pebble_worker.h>
 
-// Temporary stuff to test out peristent storage
-static int counter = 0;
-typedef struct TEST {
-    int incrementer;
-    int decrementer;
-} test_struct;
-test_struct *test;
-
 /* Prototypes */
 // Initializes the worker
 static void init(void);

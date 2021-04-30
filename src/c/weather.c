@@ -9,10 +9,6 @@ Contains the weather module's implementation
 #include "pebble.h"
 
 /* Constants */
-// Key to read and write the temperature in persistent storage
-#define TEMPERATURE_KEY 0
-// Key to access the weather conditions in peristent storage
-#define CONDITIONS_KEY 1
 // How many characters the conditions buffer can contain (including the null
 // terminator)
 #define CONDITIONS_BUFFER_SIZE 32
@@ -87,18 +83,18 @@ static void inbox_received_callback(
     if (temperature_tuple && conditions_tuple) {
         // Temperature
         const int temperature = (int)temperature_tuple->value->int32;
-        persist_write_int(TEMPERATURE_KEY, temperature)
+        persist_write_int(TEMPERATURE_KEY, temperature);
 
         // Conditions
         static char conditions_buffer[CONDITIONS_BUFFER_SIZE];
         snprintf(
             conditions_buffer,
-            sizeof(conditions_buffer),
+            CONDITIONS_BUFFER_SIZE,
             "%s",
             conditions_tuple->value->cstring
         );
         persist_write_string(
-            CONDITIONS_KEY, conditions_buffer, CONDITIONS_BUFFER_SIZE);
+            CONDITIONS_KEY, conditions_buffer);
     }
 }
 

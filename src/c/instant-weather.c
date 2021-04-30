@@ -45,11 +45,27 @@ Initializes the app by creating the main window and starting the background
 worker
 */
 static void init(void) {
+    // Due to the way the background weather storage works, the execution here
+    // can take radically different paths based on how the app was launched.
     if (launch_reason() == APP_LAUNCH_WORKER) {
+        // If the app was launched by the background worker, we want to fetch
+        // new weather data and exit as quickly as possible, while informing the
+        // user about what it's doing.
+        // (note that I originally planned to have the background worker fetch
+        // the data, but the Pebble C API turned out to be very strict about
+        // letting background processes communicate with the phone! Go figure.)
         APP_LOG(APP_LOG_LEVEL_DEBUG, "Launched by worker");
     }
     else {
+        // If the app was launched by the user, display the weather :)
         APP_LOG(APP_LOG_LEVEL_DEBUG, "Launched somehow else");
+
+        if (persist_exists(TEMPERATURE_KEY)) {
+            APP_LOG(APP_LOG_LEVEL_DEBUG, "Weather exists");
+        }
+        else {
+            APP_LOG(APP_LOG_LEVEL_DEBUG, "Weather exists... not!");
+        }
     }
 
     // Create the main window
