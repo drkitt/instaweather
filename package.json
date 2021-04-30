@@ -20,7 +20,8 @@
       "watchface": false
     },
     "messageKeys": [
-      "dummy"
+      "TEMPERATURE",
+      "CONDITIONS"
     ],
     "resources": {
       "media": []

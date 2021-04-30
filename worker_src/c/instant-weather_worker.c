@@ -83,4 +83,6 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
     test->incrementer++;
     test->decrementer--;
     persist_write_data(1, test, sizeof(test_struct));
+    
+    worker_launch_app();
 }
