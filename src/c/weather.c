@@ -54,8 +54,7 @@ void weather_deinit(void) {
 Tells whether there's any saved weather data
 */
 bool saved_data_exists(void) {
-    // It'll be like this until the persistence stuff is in the main branch
-    return false;
+    return persist_exists(TEMPERATURE_KEY) && persist_exists(CONDITIONS_KEY);
 }
 
 
