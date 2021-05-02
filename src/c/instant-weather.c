@@ -62,10 +62,9 @@ static void init(void) {
 
         if (saved_data_exists()) {
             APP_LOG(APP_LOG_LEVEL_DEBUG, "Weather exists");
-            int temperature = persist_read_int(TEMPERATURE_KEY);
+            int temperature = get_temperature();
             char conditions_buffer[CONDITIONS_BUFFER_SIZE];
-            persist_read_string(
-                CONDITIONS_KEY, conditions_buffer, CONDITIONS_BUFFER_SIZE);
+            get_conditions(conditions_buffer, CONDITIONS_BUFFER_SIZE);
             APP_LOG(
                 APP_LOG_LEVEL_DEBUG,
                 "Temperature is %d and conditions are %s. Isn't that neat?",

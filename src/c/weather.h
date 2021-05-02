@@ -31,4 +31,10 @@ void weather_deinit(void);
 // Tells whether there's any saved weather data
 bool saved_data_exists(void);
 
+// Gets the temperature from persistent storage
+int get_temperature(void);
+
+// Gets the conditions from persistent storage
+void get_conditions(char *conditions_buffer, int conditions_buffer_size);
+
 #endif /* end of include guard: WEATHER_H */
