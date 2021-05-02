@@ -5,7 +5,7 @@ Contains the weather module's implementation
 /* Included files */
 // Weather module interface
 #include "weather.h"
-// Pebble standard library
+// Standard Pebble functions and types
 #include "pebble.h"
 
 /* Static prototypes */
