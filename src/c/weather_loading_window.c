@@ -48,10 +48,13 @@ static void load(Window *window) {
     // Set up status message
     status_layer = text_layer_create(GRect(0, 72, bounds.size.w, 20));
     text_layer_set_text(status_layer,
-        "Fetching weather data. Pardon the interruption..."
+        "Fetching weather.\nPardon the interruption..."
     );
     text_layer_set_text_alignment(status_layer, GTextAlignmentCenter);
     layer_add_child(window_layer, text_layer_get_layer(status_layer));
+
+    // Initialize the weather system, which will soon fetch the weather
+    weather_init();
 }
 
 /*
