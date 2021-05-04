@@ -39,7 +39,7 @@ Parameters:
     window: Pointer to the window-to-be
 */
 static void load(Window *window) {
-    // Get the main layer's boundsf
+    // Get the main layer's bounds
     Layer *window_layer = window_get_root_layer(window);
     const GRect bounds = layer_get_bounds(window_layer);
 
