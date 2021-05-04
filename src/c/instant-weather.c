@@ -5,8 +5,6 @@ Contains the code to be ran directly on the watch while the app is in focus
 /* Included files */
 // Standard Pebble functions and types
 #include <pebble.h>
-// Weather saving and loading
-#include "weather.h"
 // Displaying the weather
 #include "weather_display_window.h"
 
@@ -51,30 +49,16 @@ static void init(void) {
         // the data, but the Pebble C API turned out to be very strict about
         // letting background processes communicate with the phone! Go figure.)
         APP_LOG(APP_LOG_LEVEL_DEBUG, "Launched by worker");
+        // Segfault time >:)
+        //main_window = TODO temperature fetch window that calls weather_init
     }
     else {
         // If the app was launched by the user, just display the weather :)
         APP_LOG(APP_LOG_LEVEL_DEBUG, "Launched somehow else");
-
-        if (saved_data_exists()) {
-            APP_LOG(APP_LOG_LEVEL_DEBUG, "Weather exists");
-            int temperature = get_temperature();
-            char conditions_buffer[CONDITIONS_BUFFER_SIZE];
-            get_conditions(conditions_buffer, CONDITIONS_BUFFER_SIZE);
-            APP_LOG(
-                APP_LOG_LEVEL_DEBUG,
-                "Temperature is %d and conditions are %s. Isn't that neat?",
-                temperature,
-                conditions_buffer
-            );
-        }
-        else {
-            APP_LOG(APP_LOG_LEVEL_DEBUG, "Weather exists... not!");
-        }
+        main_window = weather_display_window_create();
     }
 
     // Create the main window
-    main_window = weather_display_window_create();
     const bool animated = true;
     window_stack_push(main_window, animated);
 
@@ -85,8 +69,6 @@ static void init(void) {
         "Background worker launch returned value %d",
         result
     );
-
-    weather_init();
 }
 
 /*
@@ -94,5 +76,4 @@ Deinitializes the app by destroying the main window
 */
 static void deinit(void) {
     window_destroy(main_window);
-    weather_deinit();
 }

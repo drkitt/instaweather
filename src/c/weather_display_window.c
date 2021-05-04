@@ -5,6 +5,8 @@ Contains the implementation for the weather display window
 /* Included files */
 // Weather display window interface
 #include "weather_display_window.h"
+// Weather saving and loading
+#include "weather.h"
 
 /* Static variables */
 // Displays the temperature
@@ -40,6 +42,23 @@ static void load(Window *window) {
     // Get the main layer's boundsf
     Layer *window_layer = window_get_root_layer(window);
     const GRect bounds = layer_get_bounds(window_layer);
+
+    // Load or fetch weather data
+    if (saved_data_exists()) {
+        APP_LOG(APP_LOG_LEVEL_DEBUG, "Weather exists");
+        int temperature = get_temperature();
+        char conditions_buffer[CONDITIONS_BUFFER_SIZE];
+        get_conditions(conditions_buffer, CONDITIONS_BUFFER_SIZE);
+        APP_LOG(
+            APP_LOG_LEVEL_DEBUG,
+            "Temperature is %d and conditions are %s. Isn't that neat?",
+            temperature,
+            conditions_buffer
+        );
+    }
+    else {
+        APP_LOG(APP_LOG_LEVEL_DEBUG, "Weather exists... not!");
+    }
 
     // Set up temperature display
     temperature_layer = text_layer_create(GRect(0, 72, bounds.size.w, 20));
