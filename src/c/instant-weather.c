@@ -7,6 +7,8 @@ Contains the code to be ran directly on the watch while the app is in focus
 #include <pebble.h>
 // Displaying the weather
 #include "weather_display_window.h"
+// Loading screen
+#include "weather_loading_window.h"
 
 /* Static variables */
 // Displays the entire app
@@ -49,8 +51,7 @@ static void init(void) {
         // the data, but the Pebble C API turned out to be very strict about
         // letting background processes communicate with the phone! Go figure.)
         APP_LOG(APP_LOG_LEVEL_DEBUG, "Launched by worker");
-        // Segfault time >:)
-        //main_window = TODO temperature fetch window that calls weather_init
+        main_window = weather_loading_window_create();
     }
     else {
         // If the app was launched by the user, just display the weather :)
