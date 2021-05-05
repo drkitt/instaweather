@@ -61,7 +61,7 @@ static void load(Window *window) {
     }
 
     // Set up temperature display
-    temperature_layer = text_layer_create(GRect(0, 72, bounds.size.w, 20));
+    temperature_layer = text_layer_create(GRect(0, 72, bounds.size.w, 40));
     text_layer_set_text(temperature_layer, "Hello world!");
     text_layer_set_text_alignment(temperature_layer, GTextAlignmentCenter);
     layer_add_child(window_layer, text_layer_get_layer(temperature_layer));

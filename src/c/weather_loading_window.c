@@ -46,12 +46,13 @@ static void load(Window *window) {
     const GRect bounds = layer_get_bounds(window_layer);
 
     // Set up status message
-    status_layer = text_layer_create(GRect(0, 72, bounds.size.w, 20));
+    status_layer = text_layer_create(GRect(0, 36, bounds.size.w, 60));
     text_layer_set_text(status_layer,
-        "Fetching weather.\nPardon the interruption..."
+        "Getting updated weather info.\n\nPlease wait..."
     );
     text_layer_set_text_alignment(status_layer, GTextAlignmentCenter);
     layer_add_child(window_layer, text_layer_get_layer(status_layer));
+    text_layer_enable_screen_text_flow_and_paging(status_layer, 0);
 
     // Initialize the weather system, which will soon fetch the weather
     weather_init();
