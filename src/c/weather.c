@@ -34,9 +34,9 @@ void weather_init(void) {
     app_message_register_inbox_received(inbox_received_callback);
     // Open AppMessage (this is best done immediately after registering the
     // inbox receive callback, to make sure that we don't miss anything)
-    const int INBOX_SIZE = 128;
-    const int OUTBOX_SIZE = 128;
-    app_message_open(INBOX_SIZE, OUTBOX_SIZE);
+    app_message_open(
+        APP_MESSAGE_INBOX_SIZE_MINIMUM, APP_MESSAGE_OUTBOX_SIZE_MINIMUM
+    );
     // Finish registering callbacks
     app_message_register_inbox_dropped(inbox_dropped_callback);
     app_message_register_outbox_failed(outbox_failed_callback);
