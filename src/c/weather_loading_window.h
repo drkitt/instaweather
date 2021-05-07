@@ -1,6 +1,8 @@
 /*
 Contains the interface for the window that displays a message while the weather
-loads
+loads. Usually used when the app is launched by the background worker, but it
+can also appear when the app is launched by the user and there's no saved
+weather data
 */
 
 /* Included files */

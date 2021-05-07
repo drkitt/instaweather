@@ -7,8 +7,10 @@ then closes.
 /* Included files */
 // Weather loading window interface
 #include "weather_loading_window.h"
+// Weather fetching
+#include "weather_fetch.h"
 // Weather saving and loading
-#include "weather.h"
+#include "weather_storage.h"
 
 /* Static variables */
 // Displays a status message to the user

@@ -6,7 +6,7 @@ Contains the implementation for the weather display window
 // Weather display window interface
 #include "weather_display_window.h"
 // Weather saving and loading
-#include "weather.h"
+#include "weather_storage.h"
 
 /* Static variables */
 // Displays the temperature
