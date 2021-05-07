@@ -17,9 +17,8 @@ if there's no weather info saved.
 #define TEMPERATURE_KEY 0
 // Key to access the weather conditions in peristent storage
 #define CONDITIONS_KEY 1
-// How many characters the conditions buffer can contain (including the null
-// terminator)
-#define CONDITIONS_BUFFER_SIZE 32
+// Size of a string stored in local storage
+#define STORED_BUFFER_SIZE 32
 
 // Tells whether there's any saved weather data
 bool saved_data_exists(void);

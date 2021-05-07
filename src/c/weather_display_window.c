@@ -47,8 +47,8 @@ static void load(Window *window) {
     if (saved_data_exists()) {
         APP_LOG(APP_LOG_LEVEL_DEBUG, "Weather exists");
         int temperature = get_temperature();
-        char conditions_buffer[CONDITIONS_BUFFER_SIZE];
-        get_conditions(conditions_buffer, CONDITIONS_BUFFER_SIZE);
+        char conditions_buffer[STORED_BUFFER_SIZE];
+        get_conditions(conditions_buffer, STORED_BUFFER_SIZE);
         APP_LOG(
             APP_LOG_LEVEL_DEBUG,
             "Temperature is %d and conditions are %s. Isn't that neat?",

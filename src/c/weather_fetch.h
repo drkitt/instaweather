@@ -7,6 +7,10 @@ bluetooth connection with the phone, specifically.
 #ifndef WEATHER_FETCH_H
 #define WEATHER_FETCH_H
 
+/* Constants */
+// Size of a string transmitted over bluetooth
+#define TRANSMISSION_BUFFER_SIZE 32
+
 /* Types */
 /*
 Pointer to function to be called when the weather has been fetched
