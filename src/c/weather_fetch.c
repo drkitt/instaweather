@@ -43,6 +43,9 @@ void fetch_weather(OnFetched p_callback) {
     app_message_register_outbox_failed(outbox_failed_callback);
     app_message_register_outbox_sent(outbox_sent_callback);
 
+    // Save the given callback so we can, uh, call it back
+    callback = p_callback;
+
     // TODO: Send a message to the phone to tell it that we want weather info
 }
 
@@ -60,6 +63,14 @@ static void inbox_received_callback(
         iterator, MESSAGE_KEY_TEMPERATURE);
     const Tuple *conditions_tuple = dict_find(
         iterator, MESSAGE_KEY_CONDITIONS);
+
+    // Deregister app message callbacks, therby preventing redundant calls of
+    // the supplied callback
+    app_message_deregister_callbacks();
+
+    const int temperature = (int)temperature_tuple->value->int32;
+
+    // TODO: Salvage the rest of the code below so you can call the callback
 
     // If all data is available, store it
     // if (temperature_tuple && conditions_tuple) {
