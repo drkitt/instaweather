@@ -31,6 +31,7 @@ Window *weather_loading_window_create(void) {
         .load = load,
         .unload = unload,
     });
+
     return new_window;
 }
 
@@ -53,9 +54,6 @@ static void load(Window *window) {
     text_layer_set_text_alignment(status_layer, GTextAlignmentCenter);
     layer_add_child(window_layer, text_layer_get_layer(status_layer));
     text_layer_enable_screen_text_flow_and_paging(status_layer, 0);
-
-    // Initialize the weather system, which will soon fetch the weather
-    weather_init();
 }
 
 /*

@@ -21,13 +21,6 @@ if there's no weather info saved.
 // terminator)
 #define CONDITIONS_BUFFER_SIZE 32
 
-/* Prototypes */
-// Sets up the weather module
-void weather_init(void);
-
-// Sets down the weather module
-void weather_deinit(void);
-
 // Tells whether there's any saved weather data
 bool saved_data_exists(void);
 
