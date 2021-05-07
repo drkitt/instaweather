@@ -14,6 +14,7 @@ bluetooth connection with the phone, specifically.
 /* Types */
 /*
 Pointer to function to be called when the weather has been fetched
+
 Parameters:
     temperature: The temperature at the user's current location
     conditions_buffer: String containing the weather conditions
@@ -22,7 +23,7 @@ Parameters:
 */
 typedef void (*OnFetched)(
     int temperature, char *conditions_buffer, int conditions_buffer_size
-);
+); // TODO: Also pass a window so the loading function can save it via context and then pass it into the callback to die instantly
 
 // Fetches the weather (amazing!)
 void fetch_weather(OnFetched p_callback);

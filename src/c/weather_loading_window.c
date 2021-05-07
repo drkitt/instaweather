@@ -21,6 +21,10 @@ static TextLayer *status_layer;
 static void load(Window *window);
 // Callback for unloading the window
 static void unload(Window *window);
+// Callback for recieving weather info
+static void on_fetch(
+    int temperature, char *conditions_buffer, int conditions_buffer_size
+);
 
 /*
 Sets up a window and returns a pointer to it.
@@ -56,6 +60,9 @@ static void load(Window *window) {
     text_layer_set_text_alignment(status_layer, GTextAlignmentCenter);
     layer_add_child(window_layer, text_layer_get_layer(status_layer));
     text_layer_enable_screen_text_flow_and_paging(status_layer, 0);
+
+    // The "weather loading" part
+    fetch_weather(on_fetch);
 }
 
 /*
@@ -66,4 +73,20 @@ Parameters:
 */
 static void unload(Window *window) {
     text_layer_destroy(status_layer);
+}
+
+/*
+Called when the weather info has arrived from the internet. Saves the incoming
+weather info to local storage and then closes this window
+
+Parameters:
+    temperature: The temperature at the user's current location
+    conditions_buffer: String containing the weather conditions
+    conditions_buffer_size: Length of conditions_buffer, including the null
+        terminator
+*/
+static void on_fetch(
+    int temperature, char *conditions_buffer, int conditions_buffer_size
+) {
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "I caught it!");
 }
