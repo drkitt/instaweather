@@ -34,6 +34,10 @@ Parameters:
     p_callback: Pointer to function to be called after fetching
 */
 void fetch_weather(Window *window, OnFetched p_callback) {
+    // Save info for the callback
+    callback = p_callback;
+    app_message_set_context(window);
+
     // Set up weather fetch
     app_message_register_inbox_received(inbox_received_callback);
     // Open AppMessage (this is best done immediately after registering the
@@ -46,10 +50,6 @@ void fetch_weather(Window *window, OnFetched p_callback) {
     app_message_register_inbox_dropped(inbox_dropped_callback);
     app_message_register_outbox_failed(outbox_failed_callback);
     app_message_register_outbox_sent(outbox_sent_callback);
-
-    // Save the given callback so we can, uh, call it back
-    app_message_set_context(window);
-    callback = p_callback;
 }
 
 /*
@@ -61,23 +61,20 @@ Parameters:
 static void inbox_received_callback(
     DictionaryIterator *iterator, void *context) {
 
-    // Use the given iterator to load the data from the dictionary to the tuples
+    APP_LOG(APP_LOG_LEVEL_INFO, "Inbox recieve success!");
+
+    // Use the given iterator to (attempt to) load the data from the dictionary
     const Tuple *temperature_tuple = dict_find(
         iterator, MESSAGE_KEY_TEMPERATURE);
     const Tuple *conditions_tuple = dict_find(
         iterator, MESSAGE_KEY_CONDITIONS);
 
-    // Deregister app message callbacks, therby preventing redundant calls of
-    // the supplied callback
-    app_message_set_context(NULL);
-    app_message_deregister_callbacks();
-
-    const int temperature = (int)temperature_tuple->value->int32;
-
-    // TODO: Salvage the rest of the code below so you can call the callback
-
     // If all data is available, store it
-    // if (temperature_tuple && conditions_tuple) {
+    if (temperature_tuple && conditions_tuple && context) {
+        // Deregister app message callbacks, therby preventing redundant calls of
+        // the supplied callback
+        app_message_set_context(NULL);
+        app_message_deregister_callbacks();
     //     // Temperature
     //     const int temperature = (int)temperature_tuple->value->int32;
     //     persist_write_int(TEMPERATURE_KEY, temperature);
@@ -92,7 +89,19 @@ static void inbox_received_callback(
     //     );
     //     persist_write_string(
     //         CONDITIONS_KEY, conditions_buffer);
-    // }
+    }
+    else {
+        // If we're here, then the message we recieved is just the initial one
+        // saying that the JS code that runs on the phone is reeady, so we send
+        // a message to the phone to tell it that it's weather time.
+        // The content of the message doesn't matter; the JS code that runs on
+        // the phone knows that getting a message from this watch app means to
+        // fetch the weather
+        DictionaryIterator *iterator;
+        app_message_outbox_begin(&iterator);
+        dict_write_uint8(iterator, 0, 0);
+        app_message_outbox_send();
+    }
 }
 
 /*

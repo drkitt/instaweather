@@ -83,6 +83,22 @@ function getWeather() {
     );
 }
 
+// Listen for when the watchface is opened
+Pebble.addEventListener('ready',
+    function(e) {
+        console.log('PebbleKit JS is ready!');
+
+        Pebble.sendAppMessage({},
+            function(e) {
+                console.log('Initial message sent to Pebble successfully!');
+            },
+            function(e) {
+                console.log('No response for initial message');
+            }
+        );
+    }
+);
+
 // Listen for when an AppMessage is received
 Pebble.addEventListener('appmessage',
     function(e) {
