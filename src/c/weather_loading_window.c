@@ -62,7 +62,7 @@ static void load(Window *window) {
     text_layer_enable_screen_text_flow_and_paging(status_layer, 0);
 
     // The "weather loading" part
-    fetch_weather(on_fetch);
+    fetch_weather(window, on_fetch);
 }
 
 /*

@@ -7,6 +7,10 @@ bluetooth connection with the phone, specifically.
 #ifndef WEATHER_FETCH_H
 #define WEATHER_FETCH_H
 
+/* Included files */
+// Standard Pebble functions and types
+#include <pebble.h>
+
 /* Constants */
 // Size of a string transmitted over bluetooth
 #define TRANSMISSION_BUFFER_SIZE 32
@@ -23,9 +27,9 @@ Parameters:
 */
 typedef void (*OnFetched)(
     int temperature, char *conditions_buffer, int conditions_buffer_size
-); // TODO: Also pass a window so the loading function can save it via context and then pass it into the callback to die instantly
+);
 
 // Fetches the weather (amazing!)
-void fetch_weather(OnFetched p_callback);
+void fetch_weather(Window *window, OnFetched p_callback);
 
 #endif /* end of include guard: WEATHER_FETCH_H */

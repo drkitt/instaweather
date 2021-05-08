@@ -27,9 +27,13 @@ static void outbox_failed_callback(
 /*
 Fetches the weather!
 Parameters:
+    window: Pointer to the window from which this function was called.
+        It's saved for the callback to access, so if the function that
+        p_callback points to doesn't care about the window then this can be
+        null.
     p_callback: Pointer to function to be called after fetching
 */
-void fetch_weather(OnFetched p_callback) {
+void fetch_weather(Window *window, OnFetched p_callback) {
     // Set up weather fetch
     app_message_register_inbox_received(inbox_received_callback);
     // Open AppMessage (this is best done immediately after registering the
@@ -44,9 +48,8 @@ void fetch_weather(OnFetched p_callback) {
     app_message_register_outbox_sent(outbox_sent_callback);
 
     // Save the given callback so we can, uh, call it back
+    app_message_set_context(window);
     callback = p_callback;
-
-    // TODO: Send a message to the phone to tell it that we want weather info
 }
 
 /*
@@ -66,6 +69,7 @@ static void inbox_received_callback(
 
     // Deregister app message callbacks, therby preventing redundant calls of
     // the supplied callback
+    app_message_set_context(NULL);
     app_message_deregister_callbacks();
 
     const int temperature = (int)temperature_tuple->value->int32;
