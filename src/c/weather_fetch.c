@@ -91,12 +91,7 @@ static void inbox_received_callback(
 
         // Send the newly-fetched weather data back to the window that
         // requested it
-        callback(
-            window,
-            temperature,
-            conditions_buffer,
-            TRANSMISSION_BUFFER_SIZE
-        );
+        callback(window, temperature, conditions_buffer);
     }
     else {
         // If we're here, then the message we recieved is just the initial one

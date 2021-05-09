@@ -27,4 +27,10 @@ int load_temperature(void);
 // Gets the conditions from persistent storage
 void load_conditions(char *conditions_buffer, int conditions_buffer_size);
 
+// Saves the temperature to persistent storage
+void save_temperature(const int temperature);
+
+// Saves the conditions to persistent storage
+void save_conditions(const char *conditions_buffer);
+
 #endif /* end of include guard: WEATHER_STORAGE_H */

@@ -45,3 +45,25 @@ void load_conditions(char *conditions_buffer, int conditions_buffer_size) {
         conditions_buffer[0] = '\0';
     }
 }
+
+/*
+Saves the temperature to persistent storage
+Parameters:
+    temperature: The value to save
+*/
+void save_temperature(const int temperature) {
+    persist_write_int(TEMPERATURE_KEY, temperature);
+}
+
+/*
+Saves the conditions to parsistent storage
+Parameters:
+    conditions_buffer: String to write to persistent storage
+
+    Shockingly, we don't have to provide the string length; the function we use
+        here has a maximum length defined by the Pebble API
+*/
+void save_conditions(const char *conditions_buffer) {
+
+    persist_write_string(CONDITIONS_KEY, conditions_buffer);
+}
