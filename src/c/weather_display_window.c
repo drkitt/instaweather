@@ -19,6 +19,8 @@ static TextLayer *temperature_layer;
 static void load(Window *window);
 // Callback for unloading the window
 static void unload(Window *window);
+// Displays weather from persistent storage
+static void display_saved_weather();
 
 /*
 Sets up a window and returns a pointer to it.
@@ -48,15 +50,7 @@ static void load(Window *window) {
     // Load or fetch weather data
     if (saved_data_exists()) {
         APP_LOG(APP_LOG_LEVEL_INFO, "Weather exists");
-        int temperature = load_temperature();
-        char conditions_buffer[STORED_BUFFER_SIZE];
-        load_conditions(conditions_buffer, STORED_BUFFER_SIZE);
-        APP_LOG(
-            APP_LOG_LEVEL_INFO,
-            "Temperature is %d and conditions are %s. Isn't that neat?",
-            temperature,
-            conditions_buffer
-        );
+        display_saved_weather();
     }
     else {
         APP_LOG(APP_LOG_LEVEL_INFO, "Weather exists... not!");
@@ -79,4 +73,21 @@ Parameters:
 */
 static void unload(Window *window) {
     text_layer_destroy(temperature_layer);
+}
+
+/*
+Displays weather info that's saved to persistent storage
+*/
+static void display_saved_weather() {
+
+    int temperature = load_temperature();
+    char conditions_buffer[STORED_BUFFER_SIZE];
+    load_conditions(conditions_buffer, STORED_BUFFER_SIZE);
+
+    APP_LOG(
+        APP_LOG_LEVEL_INFO,
+        "Temperature is %d and conditions are %s. Isn't that neat?",
+        temperature,
+        conditions_buffer
+    );
 }
