@@ -64,6 +64,5 @@ Parameters:
         here has a maximum length defined by the Pebble API
 */
 void save_conditions(const char *conditions_buffer) {
-
     persist_write_string(CONDITIONS_KEY, conditions_buffer);
 }

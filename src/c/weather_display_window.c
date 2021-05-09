@@ -7,6 +7,8 @@ Contains the implementation for the weather display window
 #include "weather_display_window.h"
 // Weather saving and loading
 #include "weather_storage.h"
+// Fetching the weather in case we don't have any saved
+#include "weather_loading_window.h"
 
 /* Static variables */
 // Displays the temperature
@@ -58,6 +60,9 @@ static void load(Window *window) {
     }
     else {
         APP_LOG(APP_LOG_LEVEL_DEBUG, "Weather exists... not!");
+        Window *loading_window = weather_loading_window_create();
+        const bool animated = true;
+        window_stack_push(loading_window, animated);
     }
 
     // Set up temperature display
