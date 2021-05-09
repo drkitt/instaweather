@@ -89,6 +89,8 @@ static void inbox_received_callback(
     //     );
     //     persist_write_string(
     //         CONDITIONS_KEY, conditions_buffer);
+
+        callback(0, "", 0);
     }
     else {
         // If we're here, then the message we recieved is just the initial one
