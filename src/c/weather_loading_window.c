@@ -87,4 +87,6 @@ static void on_fetch(
 
     save_temperature(temperature);
     save_conditions(conditions_buffer);
+
+    window_stack_remove(window, true);
 }
