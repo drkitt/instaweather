@@ -46,26 +46,12 @@ Parameters:
     window: Pointer to the window-to-be
 */
 static void load(Window *window) {
-    // Get the main layer's bounds
-    Layer *window_layer = window_get_root_layer(window);
-    const GRect bounds = layer_get_bounds(window_layer);
-
-    // Load or fetch weather data
-    if (saved_data_exists()) {
-        APP_LOG(APP_LOG_LEVEL_INFO, "Weather exists");
-        display_saved_weather();
-    }
-    else {
-        APP_LOG(APP_LOG_LEVEL_INFO, "Weather exists... not!");
+    // Load or fetch weather data if necessary
+    if (!saved_data_exists()) {
+        APP_LOG(APP_LOG_LEVEL_INFO, "No saved data found");
         Window *loading_window = weather_loading_window_create();
         window_stack_push(loading_window, true);
     }
-
-    // Set up temperature display
-    temperature_layer = text_layer_create(GRect(0, 72, bounds.size.w, 40));
-    text_layer_set_text(temperature_layer, "Hello world!");
-    text_layer_set_text_alignment(temperature_layer, GTextAlignmentCenter);
-    layer_add_child(window_layer, text_layer_get_layer(temperature_layer));
 }
 
 /*
@@ -85,18 +71,22 @@ Parameters:
     window: The new window
 */
 static void appear(Window *window) {
-    APP_LOG(APP_LOG_LEVEL_DEBUG, "Window %p is on screen!", window);
-}
-
-/*
-Displays weather info that's saved to persistent storage
-*/
-static void display_saved_weather() {
-
+    // Since the load function brings up the loading window if there's no saved
+    // weather data (and said data is never deleted), if we get to this point
+    // then we can assume that saved weather exists
     int temperature = load_temperature();
     char conditions_buffer[STORED_BUFFER_SIZE];
     load_conditions(conditions_buffer, STORED_BUFFER_SIZE);
 
+    // Set up temperature display
+    Layer *window_layer = window_get_root_layer(window);
+    const GRect bounds = layer_get_bounds(window_layer);
+    temperature_layer = text_layer_create(GRect(0, 72, bounds.size.w, 40));
+    text_layer_set_text(temperature_layer, "Hello world!");
+    text_layer_set_text_alignment(temperature_layer, GTextAlignmentCenter);
+    layer_add_child(window_layer, text_layer_get_layer(temperature_layer));
+
+    // Can't wait to remove this
     APP_LOG(
         APP_LOG_LEVEL_INFO,
         "Temperature is %d and conditions are %s. Isn't that neat?",
