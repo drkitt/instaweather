@@ -81,7 +81,11 @@ static void appear(Window *window) {
     const GRect bounds = layer_get_bounds(window_layer);
     temperature_layer = text_layer_create(GRect(0, 72, bounds.size.w, 40));
     static char temperature_buffer[TEMPERATURE_BUFFER_SIZE];
-    snprintf(temperature_buffer, TEMPERATURE_BUFFER_SIZE, "%d", temperature);
+    snprintf(temperature_buffer, TEMPERATURE_BUFFER_SIZE, "%d°", temperature);
+    // text_layer_set_text_color(temperature_layer, GColorWhite);
+    text_layer_set_font(
+        temperature_layer, fonts_get_system_font(FONT_KEY_LECO_38_BOLD_NUMBERS)
+    );
     text_layer_set_text(temperature_layer, temperature_buffer);
     text_layer_set_text_alignment(temperature_layer, GTextAlignmentCenter);
     layer_add_child(window_layer, text_layer_get_layer(temperature_layer));
