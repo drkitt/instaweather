@@ -47,22 +47,21 @@ static void load(Window *window) {
 
     // Load or fetch weather data
     if (saved_data_exists()) {
-        APP_LOG(APP_LOG_LEVEL_DEBUG, "Weather exists");
+        APP_LOG(APP_LOG_LEVEL_INFO, "Weather exists");
         int temperature = load_temperature();
         char conditions_buffer[STORED_BUFFER_SIZE];
         load_conditions(conditions_buffer, STORED_BUFFER_SIZE);
         APP_LOG(
-            APP_LOG_LEVEL_DEBUG,
+            APP_LOG_LEVEL_INFO,
             "Temperature is %d and conditions are %s. Isn't that neat?",
             temperature,
             conditions_buffer
         );
     }
     else {
-        APP_LOG(APP_LOG_LEVEL_DEBUG, "Weather exists... not!");
+        APP_LOG(APP_LOG_LEVEL_INFO, "Weather exists... not!");
         Window *loading_window = weather_loading_window_create();
-        const bool animated = true;
-        window_stack_push(loading_window, animated);
+        window_stack_push(loading_window, true);
     }
 
     // Set up temperature display

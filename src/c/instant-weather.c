@@ -25,13 +25,6 @@ Main entry point for the app
 */
 int main(void) {
     init();
-
-    APP_LOG(
-        APP_LOG_LEVEL_DEBUG,
-        "Done initializing, pushed window: %p",
-        main_window
-    );
-
     app_event_loop();
     deinit();
 }
@@ -50,12 +43,15 @@ static void init(void) {
         // (note that I originally planned to have the background worker fetch
         // the data, but the Pebble C API turned out to be very strict about
         // letting background processes communicate with the phone! Go figure.)
-        APP_LOG(APP_LOG_LEVEL_DEBUG, "Launched by worker");
+        APP_LOG(APP_LOG_LEVEL_INFO, "Launched by worker");
         main_window = weather_loading_window_create();
     }
     else {
         // If the app was launched by the user, just display the weather :)
-        APP_LOG(APP_LOG_LEVEL_DEBUG, "Launched somehow else");
+        APP_LOG(
+            APP_LOG_LEVEL_INFO,
+            "Launched somehow other than by worker (most likely by user)"
+        );
         main_window = weather_display_window_create();
     }
 
@@ -65,7 +61,7 @@ static void init(void) {
     // Start the background worker if it's not running already
     const AppWorkerResult result = app_worker_launch();
     APP_LOG(
-        APP_LOG_LEVEL_DEBUG,
+        APP_LOG_LEVEL_INFO,
         "Background worker launch returned value %d",
         result
     );

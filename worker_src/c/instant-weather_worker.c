@@ -28,8 +28,6 @@ int main(void) {
 Initializes the worker
 */
 static void init(void) {
-    APP_LOG(APP_LOG_LEVEL_DEBUG, "Background worker time >:)");
-
     // Register with the tick timer service in order to update periodically
     tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
 }
@@ -49,7 +47,7 @@ interface):
     second).
 */
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
-    APP_LOG(APP_LOG_LEVEL_DEBUG, "hey what's up it's the background worker");
+    APP_LOG(APP_LOG_LEVEL_INFO, "Background worker running tick handler");
 
     worker_launch_app();
 }
