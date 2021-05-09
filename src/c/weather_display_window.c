@@ -21,8 +21,6 @@ static void load(Window *window);
 static void unload(Window *window);
 // Callback for displaying the window
 static void appear(Window *window);
-// Displays weather from persistent storage
-static void display_saved_weather();
 
 /*
 Sets up a window and returns a pointer to it.
@@ -82,7 +80,9 @@ static void appear(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
     const GRect bounds = layer_get_bounds(window_layer);
     temperature_layer = text_layer_create(GRect(0, 72, bounds.size.w, 40));
-    text_layer_set_text(temperature_layer, "Hello world!");
+    static char temperature_buffer[TEMPERATURE_BUFFER_SIZE];
+    snprintf(temperature_buffer, TEMPERATURE_BUFFER_SIZE, "%d", temperature);
+    text_layer_set_text(temperature_layer, temperature_buffer);
     text_layer_set_text_alignment(temperature_layer, GTextAlignmentCenter);
     layer_add_child(window_layer, text_layer_get_layer(temperature_layer));
 
