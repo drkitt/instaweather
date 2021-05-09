@@ -60,8 +60,7 @@ static void init(void) {
     }
 
     // Create the main window
-    const bool animated = true;
-    window_stack_push(main_window, animated);
+    window_stack_push(main_window, true);
 
     // Start the background worker if it's not running already
     const AppWorkerResult result = app_worker_launch();
