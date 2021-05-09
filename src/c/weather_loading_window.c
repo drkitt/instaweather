@@ -98,4 +98,6 @@ static void on_fetch(
     APP_LOG(APP_LOG_LEVEL_DEBUG, "Temperature: %d", temperature);
     APP_LOG(APP_LOG_LEVEL_DEBUG, "Conditions buffer: %s", conditions_buffer);
     APP_LOG(APP_LOG_LEVEL_DEBUG, "Conditions buffer size: %d", conditions_buffer_size);
+
+    
 }

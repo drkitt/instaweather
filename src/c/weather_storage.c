@@ -21,7 +21,7 @@ Gets the temperature from persistent storage
         ...Or -1 if there's no temperature data saved
         (shoulda called saved_data_exists first!)
 */
-int get_temperature(void) {
+int load_temperature(void) {
     return persist_exists(TEMPERATURE_KEY) ? persist_read_int(TEMPERATURE_KEY)
         : -1;
 }
@@ -35,7 +35,7 @@ Parameters:
     conditions_buffer_size: Length of conditions_buffer, including the null
         terminator
 */
-void get_conditions(char *conditions_buffer, int conditions_buffer_size) {
+void load_conditions(char *conditions_buffer, int conditions_buffer_size) {
     if (persist_exists(CONDITIONS_KEY)) {
         persist_read_string(
             CONDITIONS_KEY, conditions_buffer, conditions_buffer_size);

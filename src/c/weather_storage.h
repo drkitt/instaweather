@@ -22,9 +22,9 @@ bringing weather data in and out of persistent storage.
 bool saved_data_exists(void);
 
 // Gets the temperature from persistent storage
-int get_temperature(void);
+int load_temperature(void);
 
 // Gets the conditions from persistent storage
-void get_conditions(char *conditions_buffer, int conditions_buffer_size);
+void load_conditions(char *conditions_buffer, int conditions_buffer_size);
 
 #endif /* end of include guard: WEATHER_STORAGE_H */
