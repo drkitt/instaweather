@@ -19,6 +19,8 @@ static TextLayer *temperature_layer;
 static void load(Window *window);
 // Callback for unloading the window
 static void unload(Window *window);
+// Callback for displaying the window
+static void appear(Window *window);
 // Displays weather from persistent storage
 static void display_saved_weather();
 
@@ -32,6 +34,7 @@ Window *weather_display_window_create(void) {
     window_set_window_handlers(new_window, (WindowHandlers) {
         .load = load,
         .unload = unload,
+        .appear = appear,
     });
     return new_window;
 }
@@ -73,6 +76,16 @@ Parameters:
 */
 static void unload(Window *window) {
     text_layer_destroy(temperature_layer);
+}
+
+/*
+Called when the window (re)appears on screen
+
+Parameters:
+    window: The new window
+*/
+static void appear(Window *window) {
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "Window %p is on screen!", window);
 }
 
 /*
