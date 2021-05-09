@@ -52,7 +52,10 @@ static void load(Window *window) {
     const GRect bounds = layer_get_bounds(window_layer);
 
     // Set up status message
+    window_set_background_color(window, GColorBlack);
     status_layer = text_layer_create(GRect(0, 36, bounds.size.w, 60));
+    text_layer_set_text_color(status_layer, GColorWhite);
+    text_layer_set_background_color(status_layer, GColorClear);
     text_layer_set_text(status_layer,
         "Getting updated weather info.\n\nPlease wait..."
     );
