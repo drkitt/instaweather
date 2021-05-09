@@ -23,7 +23,10 @@ static void load(Window *window);
 static void unload(Window *window);
 // Callback for recieving weather info
 static void on_fetch(
-    int temperature, char *conditions_buffer, int conditions_buffer_size
+    Window *window,
+    const int temperature,
+    const char *conditions_buffer,
+    const int conditions_buffer_size
 );
 
 /*
@@ -86,7 +89,10 @@ Parameters:
         terminator
 */
 static void on_fetch(
-    int temperature, char *conditions_buffer, int conditions_buffer_size
+    Window *window,
+    const int temperature,
+    const char *conditions_buffer,
+    const int conditions_buffer_size
 ) {
     APP_LOG(APP_LOG_LEVEL_DEBUG, "I caught it!");
     APP_LOG(APP_LOG_LEVEL_DEBUG, "Temperature: %d", temperature);

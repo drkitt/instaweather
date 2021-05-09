@@ -71,26 +71,32 @@ static void inbox_received_callback(
 
     // If all data is available, store it
     if (temperature_tuple && conditions_tuple && context) {
-        // Deregister app message callbacks, therby preventing redundant calls of
-        // the supplied callback
+        // Temperature
+        const int temperature = (int)temperature_tuple->value->int32;
+        // Conditions
+        static char conditions_buffer[TRANSMISSION_BUFFER_SIZE];
+        snprintf(
+            conditions_buffer,
+            TRANSMISSION_BUFFER_SIZE,
+            "%s",
+            conditions_tuple->value->cstring
+        );
+        // Context
+        Window* window = context;
+
+        // Undo the state changes we made in fetch_weather, for the sake of
+        // preventing redundant calls of the supplied callback
         app_message_set_context(NULL);
         app_message_deregister_callbacks();
-    //     // Temperature
-    //     const int temperature = (int)temperature_tuple->value->int32;
-    //     persist_write_int(TEMPERATURE_KEY, temperature);
-    //
-    //     // Conditions
-    //     static char conditions_buffer[CONDITIONS_BUFFER_SIZE];
-    //     snprintf(
-    //         conditions_buffer,
-    //         CONDITIONS_BUFFER_SIZE,
-    //         "%s",
-    //         conditions_tuple->value->cstring
-    //     );
-    //     persist_write_string(
-    //         CONDITIONS_KEY, conditions_buffer);
 
-        callback(0, "", 0);
+        // Send the newly-fetched weather data back to the window that
+        // requested it
+        callback(
+            window,
+            temperature,
+            conditions_buffer,
+            TRANSMISSION_BUFFER_SIZE
+        );
     }
     else {
         // If we're here, then the message we recieved is just the initial one

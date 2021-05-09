@@ -26,7 +26,10 @@ Parameters:
         terminator
 */
 typedef void (*OnFetched)(
-    int temperature, char *conditions_buffer, int conditions_buffer_size
+    Window *window,
+    const int temperature,
+    const char *conditions_buffer,
+    const int conditions_buffer_size
 );
 
 // Fetches the weather (amazing!)
