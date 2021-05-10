@@ -96,8 +96,8 @@ static void appear(Window *window) {
     snprintf(temperature_buffer, TEMPERATURE_BUFFER_SIZE, "%d°", temperature);
 
     // Display temperature
-    window_set_background_color(window, GColorBlack);
-    text_layer_set_text_color(temperature_layer, GColorWhite);
+    window_set_background_color(window, GColorWhite);
+    text_layer_set_text_color(temperature_layer, GColorBlack);
     text_layer_set_background_color(temperature_layer, GColorClear);
     text_layer_set_font(
         temperature_layer, fonts_get_system_font(FONT_KEY_LECO_38_BOLD_NUMBERS)
