@@ -24,7 +24,43 @@
       "CONDITIONS"
     ],
     "resources": {
-      "media": []
+      "media": [
+        {
+          "type": "raw",
+          "name": "ICON_GENERIC_WEATHER",
+          "file": "Pebble_50x50_Generic_weather.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "ICON_HEAVY_RAIN",
+          "file": "Pebble_50x50_Heavy_rain.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "ICON_HEAVY_SNOW",
+          "file": "Pebble_50x50_Heavy_snow.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "ICON_LIGHT_RAIN",
+          "file": "Pebble_50x50_Light_rain.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "ICON_LIGHT_SNOW",
+          "file": "Pebble_50x50_Light_snow.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "ICON_PARTLY_CLOUDY",
+          "file": "Pebble_50x50_Partly_cloudy.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "ICON_SUNNY_DAY",
+          "file": "Pebble_50x50_Sunny_day.pdc"
+        }
+      ]
     }
   }
 }
