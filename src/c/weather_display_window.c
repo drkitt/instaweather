@@ -13,8 +13,10 @@ Contains the implementation for the weather display window
 /* Static variables */
 // Displays the temperature
 static TextLayer *temperature_layer;
-// Displays the conditions
-// static // uhh todo figure out how the heck vector (.pdc) images work. Maybe search the dev site for that file extension?
+// Icon for the conditions
+static GDrawCommandImage *conditions_icon;
+// Displays the conditions icon
+static Layer *conditions_layer;
 
 /* Static prototypes */
 // Callback for loading the window
@@ -23,6 +25,8 @@ static void load(Window *window);
 static void unload(Window *window);
 // Callback for displaying the window
 static void appear(Window *window);
+// Callback for rendering the conditions layer
+static void conditions_layer_update(Layer *layer, GContext *context);
 
 /*
 Sets up a window and returns a pointer to it.
@@ -36,6 +40,10 @@ Window *weather_display_window_create(void) {
         .unload = unload,
         .appear = appear,
     });
+
+    // Test code for icon drawing - hopefully this can eventually go in the appear function to allow for conditional rendering based on the conditions
+    conditions_icon = gdraw_command_image_create_with_resource(RESOURCE_ID_ICON_GENERIC_WEATHER);
+
     return new_window;
 }
 
@@ -62,6 +70,8 @@ Parameters:
 */
 static void unload(Window *window) {
     text_layer_destroy(temperature_layer);
+    layer_destroy(conditions_layer);
+    gdraw_command_image_destroy(conditions_icon);
 }
 
 /*
@@ -78,7 +88,7 @@ static void appear(Window *window) {
     char conditions_buffer[STORED_BUFFER_SIZE];
     load_conditions(conditions_buffer, STORED_BUFFER_SIZE);
 
-    // Set up temperature display
+    // Set up temperature layer
     Layer *window_layer = window_get_root_layer(window);
     const GRect bounds = layer_get_bounds(window_layer);
     temperature_layer = text_layer_create(GRect(0, 72, bounds.size.w, 40));
@@ -96,7 +106,12 @@ static void appear(Window *window) {
     text_layer_set_text_alignment(temperature_layer, GTextAlignmentCenter);
     layer_add_child(window_layer, text_layer_get_layer(temperature_layer));
 
-    // Display conditions
+    // Set up conditions layer
+    conditions_layer = layer_create(
+        GRect(30, 30, bounds.size.w, bounds.size.h)
+    );
+    layer_set_update_proc(conditions_layer, conditions_layer_update);
+    layer_add_child(window_layer, conditions_layer);
 
     // Can't wait to remove this
     APP_LOG(
@@ -105,4 +120,19 @@ static void appear(Window *window) {
         temperature,
         conditions_buffer
     );
+}
+
+/*
+Called when the layer containing the conditions icon is rendered
+
+Parameters:
+    layer: The layer to be rendered
+    context: The destination graphics context to draw into
+*/
+static void conditions_layer_update(Layer *layer, GContext *context) {
+    // Set the origin offset from the context for drawing the image
+    GPoint origin = GPoint(0, -20);
+
+    // Draw the GDrawCommandImage to the GContext
+    gdraw_command_image_draw(context, conditions_icon, origin);
 }
