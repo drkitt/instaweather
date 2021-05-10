@@ -13,6 +13,8 @@ Contains the implementation for the weather display window
 /* Static variables */
 // Displays the temperature
 static TextLayer *temperature_layer;
+// Displays the conditions
+// static // uhh todo figure out how the heck vector (.pdc) images work. Maybe search the dev site for that file extension?
 
 /* Static prototypes */
 // Callback for loading the window
@@ -83,6 +85,7 @@ static void appear(Window *window) {
     static char temperature_buffer[TEMPERATURE_BUFFER_SIZE];
     snprintf(temperature_buffer, TEMPERATURE_BUFFER_SIZE, "%d°", temperature);
 
+    // Display temperature
     window_set_background_color(window, GColorBlack);
     text_layer_set_text_color(temperature_layer, GColorWhite);
     text_layer_set_background_color(temperature_layer, GColorClear);
@@ -92,6 +95,8 @@ static void appear(Window *window) {
     text_layer_set_text(temperature_layer, temperature_buffer);
     text_layer_set_text_alignment(temperature_layer, GTextAlignmentCenter);
     layer_add_child(window_layer, text_layer_get_layer(temperature_layer));
+
+    // Display conditions
 
     // Can't wait to remove this
     APP_LOG(
