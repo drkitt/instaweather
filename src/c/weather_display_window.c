@@ -91,7 +91,7 @@ static void appear(Window *window) {
     // Set up temperature layer
     Layer *window_layer = window_get_root_layer(window);
     const GRect bounds = layer_get_bounds(window_layer);
-    temperature_layer = text_layer_create(GRect(0, 72, bounds.size.w, 40));
+    temperature_layer = text_layer_create(GRect(0, 90, bounds.size.w, 40));
     static char temperature_buffer[TEMPERATURE_BUFFER_SIZE];
     snprintf(temperature_buffer, TEMPERATURE_BUFFER_SIZE, "%d°", temperature);
 
@@ -129,7 +129,7 @@ Parameters:
 */
 static void conditions_layer_update(Layer *layer, GContext *context) {
     // Set the origin offset from the context for drawing the image
-    GPoint origin = GPoint(47, 20);
+    GPoint origin = GPoint(47, 30);
 
     // Draw the GDrawCommandImage to the GContext
     gdraw_command_image_draw(context, conditions_icon, origin);
