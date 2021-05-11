@@ -107,9 +107,7 @@ static void appear(Window *window) {
     layer_add_child(window_layer, text_layer_get_layer(temperature_layer));
 
     // Set up conditions layer
-    conditions_layer = layer_create(
-        GRect(30, 30, bounds.size.w, bounds.size.h)
-    );
+    conditions_layer = layer_create(GRect(30, 0, bounds.size.w, bounds.size.h));
     layer_set_update_proc(conditions_layer, conditions_layer_update);
     layer_add_child(window_layer, conditions_layer);
 
@@ -131,7 +129,7 @@ Parameters:
 */
 static void conditions_layer_update(Layer *layer, GContext *context) {
     // Set the origin offset from the context for drawing the image
-    GPoint origin = GPoint(0, -20);
+    GPoint origin = GPoint(0, 20);
 
     // Draw the GDrawCommandImage to the GContext
     gdraw_command_image_draw(context, conditions_icon, origin);
