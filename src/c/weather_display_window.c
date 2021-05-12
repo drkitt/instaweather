@@ -10,6 +10,19 @@ Contains the implementation for the weather display window
 // Fetching the weather in case we don't have any saved
 #include "weather_loading_window.h"
 
+/* Types */
+// Possible values for the weather conditions
+typedef enum {
+    GENERIC,
+    HEAVY_RAIN,
+    HEAVY_SNOW,
+    LIGHT_RAIN,
+    LIGHT_SNOW,
+    PARTLY_CLOUDY,
+    SUNNY,
+    NUM_CONDITIONS
+} Condition;
+
 /* Static variables */
 // Displays the temperature
 static TextLayer *temperature_layer;
@@ -27,6 +40,8 @@ static void unload(Window *window);
 static void appear(Window *window);
 // Callback for rendering the conditions layer
 static void conditions_layer_update(Layer *layer, GContext *context);
+// Gets the enum value for the current conditions
+static Condition get_conditions(int id);
 
 /*
 Sets up a window and returns a pointer to it.
@@ -133,4 +148,14 @@ static void conditions_layer_update(Layer *layer, GContext *context) {
 
     // Draw the GDrawCommandImage to the GContext
     gdraw_command_image_draw(context, conditions_icon, origin);
+}
+
+/*
+// Gets the enum value for the current conditions
+
+Parameters:
+    id: Number denoting the conditions
+*/
+static Condition get_conditions(int id) {
+    return GENERIC;
 }
