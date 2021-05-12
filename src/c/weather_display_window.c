@@ -101,7 +101,7 @@ static void appear(Window *window) {
     // then we can assume that saved weather exists
     int temperature = load_temperature();
     char conditions_buffer[STORED_BUFFER_SIZE];
-    load_conditions(conditions_buffer, STORED_BUFFER_SIZE);
+    load_conditions_buffer(conditions_buffer, STORED_BUFFER_SIZE);
 
     // Set up temperature layer
     Layer *window_layer = window_get_root_layer(window);

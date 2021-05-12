@@ -22,11 +22,15 @@ Pointer to function to be called when the weather has been fetched
 Parameters:
     temperature: The temperature at the user's current location
     conditions_buffer: String containing the weather conditions
-    conditions_buffer_size: Length of conditions_buffer, including the null
-        terminator
+    conditions_id: Integer denoting the conditions (see
+        openweathermap.org/weather-conditions)
 */
 typedef void (*OnFetched)(
-    Window *window, const int temperature, const char *conditions_buffer);
+    Window *window,
+    const int temperature,
+    const char *conditions_buffer,
+    const int conditions_id
+);
 
 // Fetches the weather (amazing!)
 void fetch_weather(Window *window, OnFetched p_callback);

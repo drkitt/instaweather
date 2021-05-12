@@ -44,15 +44,20 @@ function locationSuccess(pos) {
             console.log('Temperature is ' + temperature);
 
             // Conditions
-            const conditions = json.weather[0].main;
-            console.log('Conditions are ' + conditions);
+            const conditions = json.weather[0].description;
+            const conditions_sentence_case = conditions.charAt(0).toUpperCase()
+                + conditions.slice(1);
+            const conditions_id = json.weather[0].id;
+            console.log('Conditions: ' + conditions_sentence_case);
+            console.log('Conditions id: ' + conditions_id);
 
             // Assemble dictionary using our keys
             const dictionary = {
                 'TEMPERATURE': temperature,
-                'CONDITIONS': conditions
+                'CONDITIONS': conditions,
+                'CONDITIONS_ID': conditions_id,
             };
-
+            
             // Send to Pebble
             Pebble.sendAppMessage(dictionary,
                 function(e) {

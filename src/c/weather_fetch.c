@@ -68,9 +68,16 @@ static void inbox_received_callback(
         iterator, MESSAGE_KEY_TEMPERATURE);
     const Tuple *conditions_tuple = dict_find(
         iterator, MESSAGE_KEY_CONDITIONS);
+    const Tuple *conditions_id_tuple = dict_find(
+        iterator, MESSAGE_KEY_CONDITIONS_ID);
 
     // If all data is available, store it
-    if (temperature_tuple && conditions_tuple && context) {
+    if (
+        temperature_tuple &&
+        conditions_tuple &&
+        conditions_id_tuple &&
+        context
+    ) {
         // Temperature
         const int temperature = (int)temperature_tuple->value->int32;
         // Conditions
@@ -81,6 +88,7 @@ static void inbox_received_callback(
             "%s",
             conditions_tuple->value->cstring
         );
+        const int conditions_id = (int)conditions_id_tuple->value->int32;
         // Context
         Window* window = context;
 
@@ -91,7 +99,7 @@ static void inbox_received_callback(
 
         // Send the newly-fetched weather data back to the window that
         // requested it
-        callback(window, temperature, conditions_buffer);
+        callback(window, temperature, conditions_buffer, conditions_id);
     }
     else {
         // If we're here, then the message we recieved is just the initial one

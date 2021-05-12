@@ -23,7 +23,11 @@ static void load(Window *window);
 static void unload(Window *window);
 // Callback for recieving weather info
 static void on_fetch(
-    Window *window, const int temperature, const char *conditions_buffer);
+    Window *window,
+    const int temperature,
+    const char *conditions_buffer,
+    const int conditions_id
+);
 
 /*
 Sets up a window and returns a pointer to it.
@@ -84,12 +88,18 @@ weather info to local storage and then closes this window
 Parameters:
     temperature: The temperature at the user's current location
     conditions_buffer: String containing the weather conditions
+    conditions_id: Integer denoting the conditions
 */
 static void on_fetch(
-    Window *window, const int temperature, const char *conditions_buffer) {
+    Window *window,
+    const int temperature,
+    const char *conditions_buffer,
+    const int conditions_id
+) {
 
     save_temperature(temperature);
-    save_conditions(conditions_buffer);
+    save_conditions_buffer(conditions_buffer);
+    save_conditions_id(conditions_id);
 
     window_stack_remove(window, true);
 }

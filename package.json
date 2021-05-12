@@ -21,7 +21,8 @@
     },
     "messageKeys": [
       "TEMPERATURE",
-      "CONDITIONS"
+      "CONDITIONS",
+      "CONDITIONS_ID"
     ],
     "resources": {
       "media": [
