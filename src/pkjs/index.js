@@ -54,10 +54,10 @@ function locationSuccess(pos) {
             // Assemble dictionary using our keys
             const dictionary = {
                 'TEMPERATURE': temperature,
-                'CONDITIONS': conditions,
+                'CONDITIONS': conditions_sentence_case,
                 'CONDITIONS_ID': conditions_id,
             };
-            
+
             // Send to Pebble
             Pebble.sendAppMessage(dictionary,
                 function(e) {
