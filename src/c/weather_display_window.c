@@ -26,10 +26,12 @@ typedef enum {
 /* Static variables */
 // Displays the temperature
 static TextLayer *temperature_layer;
+// Displays the conditions in text form
+static TextLayer *conditions_text_layer;
 // Icon for the conditions
 static GDrawCommandImage *conditions_icon;
 // Displays the conditions icon
-static Layer *conditions_layer;
+static Layer *conditions_icon_layer;
 
 /* Static prototypes */
 // Callback for loading the window
@@ -39,7 +41,7 @@ static void unload(Window *window);
 // Callback for displaying the window
 static void appear(Window *window);
 // Callback for rendering the conditions layer
-static void conditions_layer_update(Layer *layer, GContext *context);
+static void conditions_icon_layer_update(Layer *layer, GContext *context);
 // Gets the enum value for the current conditions
 static Condition get_conditions(int id);
 
@@ -70,11 +72,13 @@ Parameters:
 */
 static void load(Window *window) {
     // Load or fetch weather data if necessary
-    if (!saved_data_exists()) {
+    if (true){//(!saved_data_exists()) {
         APP_LOG(APP_LOG_LEVEL_INFO, "No saved data found");
         Window *loading_window = weather_loading_window_create();
         window_stack_push(loading_window, true);
     }
+    // Otherwise, the window's appear method will do all the meaninful
+    // initialization
 }
 
 /*
@@ -85,7 +89,8 @@ Parameters:
 */
 static void unload(Window *window) {
     text_layer_destroy(temperature_layer);
-    layer_destroy(conditions_layer);
+    text_layer_destroy(conditions_text_layer);
+    layer_destroy(conditions_icon_layer);
     gdraw_command_image_destroy(conditions_icon);
 }
 
@@ -99,19 +104,19 @@ static void appear(Window *window) {
     // Since the load function brings up the loading window if there's no saved
     // weather data (and said data is never deleted), if we get to this point
     // then we can assume that saved weather exists
-    int temperature = load_temperature();
-    char conditions_buffer[STORED_BUFFER_SIZE];
-    load_conditions_buffer(conditions_buffer, STORED_BUFFER_SIZE);
+    const int temperature = load_temperature();
+    static char conditions_text_buffer[STORED_BUFFER_SIZE];
+    load_conditions_buffer(conditions_text_buffer, STORED_BUFFER_SIZE);
 
-    // Set up temperature layer
+    // Set up window
     Layer *window_layer = window_get_root_layer(window);
     const GRect bounds = layer_get_bounds(window_layer);
-    temperature_layer = text_layer_create(GRect(0, 90, bounds.size.w, 40));
+    window_set_background_color(window, GColorWhite);
+
+    // Display temperature_layer
+    temperature_layer = text_layer_create(GRect(0, 100, bounds.size.w, 40));
     static char temperature_buffer[TEMPERATURE_BUFFER_SIZE];
     snprintf(temperature_buffer, TEMPERATURE_BUFFER_SIZE, "%d°", temperature);
-
-    // Display temperature
-    window_set_background_color(window, GColorWhite);
     text_layer_set_text_color(temperature_layer, GColorBlack);
     text_layer_set_background_color(temperature_layer, GColorClear);
     text_layer_set_font(
@@ -121,17 +126,26 @@ static void appear(Window *window) {
     text_layer_set_text_alignment(temperature_layer, GTextAlignmentCenter);
     layer_add_child(window_layer, text_layer_get_layer(temperature_layer));
 
-    // Set up conditions layer
-    conditions_layer = layer_create(GRect(0, 0, bounds.size.w, bounds.size.h));
-    layer_set_update_proc(conditions_layer, conditions_layer_update);
-    layer_add_child(window_layer, conditions_layer);
+    // Set up conditions text layer
+    conditions_text_layer = text_layer_create(GRect(0, 70, bounds.size.w, 20));
+    text_layer_set_text_color(conditions_text_layer, GColorBlack);
+    text_layer_set_background_color(conditions_text_layer, GColorClear);
+    text_layer_set_text(conditions_text_layer, conditions_text_buffer);
+    text_layer_set_text_alignment(conditions_text_layer, GTextAlignmentCenter);
+    layer_add_child(window_layer, text_layer_get_layer(conditions_text_layer));
+
+    // Set up and display conditions icon layer
+    conditions_icon_layer = layer_create(
+        GRect(0, 0, bounds.size.w, bounds.size.h));
+    layer_set_update_proc(conditions_icon_layer, conditions_icon_layer_update);
+    layer_add_child(window_layer, conditions_icon_layer);
 
     // Can't wait to remove this
     APP_LOG(
         APP_LOG_LEVEL_INFO,
         "Temperature is %d and conditions are %s. Isn't that neat?",
         temperature,
-        conditions_buffer
+        conditions_text_buffer
     );
 }
 
@@ -142,9 +156,9 @@ Parameters:
     layer: The layer to be rendered
     context: The destination graphics context to draw into
 */
-static void conditions_layer_update(Layer *layer, GContext *context) {
+static void conditions_icon_layer_update(Layer *layer, GContext *context) {
     // Set the origin offset from the context for drawing the image
-    GPoint origin = GPoint(47, 30);
+    GPoint origin = GPoint(47, 20);
 
     // Draw the GDrawCommandImage to the GContext
     gdraw_command_image_draw(context, conditions_icon, origin);
