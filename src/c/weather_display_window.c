@@ -72,7 +72,7 @@ Parameters:
 */
 static void load(Window *window) {
     // Load or fetch weather data if necessary
-    if (true){//(!saved_data_exists()) {
+    if (!saved_data_exists()) {
         APP_LOG(APP_LOG_LEVEL_INFO, "No saved data found");
         Window *loading_window = weather_loading_window_create();
         window_stack_push(loading_window, true);
@@ -113,6 +113,20 @@ static void appear(Window *window) {
     const GRect bounds = layer_get_bounds(window_layer);
     window_set_background_color(window, GColorWhite);
 
+    // Display conditions icon layer
+    conditions_icon_layer = layer_create(
+        GRect(0, 0, bounds.size.w, bounds.size.h));
+    layer_set_update_proc(conditions_icon_layer, conditions_icon_layer_update);
+    layer_add_child(window_layer, conditions_icon_layer);
+
+    // Display conditions text layer
+    conditions_text_layer = text_layer_create(GRect(0, 70, bounds.size.w, 20));
+    text_layer_set_text_color(conditions_text_layer, GColorBlack);
+    text_layer_set_background_color(conditions_text_layer, GColorClear);
+    text_layer_set_text(conditions_text_layer, conditions_text_buffer);
+    text_layer_set_text_alignment(conditions_text_layer, GTextAlignmentCenter);
+    layer_add_child(window_layer, text_layer_get_layer(conditions_text_layer));
+
     // Display temperature_layer
     temperature_layer = text_layer_create(GRect(0, 100, bounds.size.w, 40));
     static char temperature_buffer[TEMPERATURE_BUFFER_SIZE];
@@ -125,20 +139,6 @@ static void appear(Window *window) {
     text_layer_set_text(temperature_layer, temperature_buffer);
     text_layer_set_text_alignment(temperature_layer, GTextAlignmentCenter);
     layer_add_child(window_layer, text_layer_get_layer(temperature_layer));
-
-    // Set up conditions text layer
-    conditions_text_layer = text_layer_create(GRect(0, 70, bounds.size.w, 20));
-    text_layer_set_text_color(conditions_text_layer, GColorBlack);
-    text_layer_set_background_color(conditions_text_layer, GColorClear);
-    text_layer_set_text(conditions_text_layer, conditions_text_buffer);
-    text_layer_set_text_alignment(conditions_text_layer, GTextAlignmentCenter);
-    layer_add_child(window_layer, text_layer_get_layer(conditions_text_layer));
-
-    // Set up and display conditions icon layer
-    conditions_icon_layer = layer_create(
-        GRect(0, 0, bounds.size.w, bounds.size.h));
-    layer_set_update_proc(conditions_icon_layer, conditions_icon_layer_update);
-    layer_add_child(window_layer, conditions_icon_layer);
 
     // Can't wait to remove this
     APP_LOG(
