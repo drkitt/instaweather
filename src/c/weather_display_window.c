@@ -139,14 +139,6 @@ static void appear(Window *window) {
     text_layer_set_text(temperature_layer, temperature_buffer);
     text_layer_set_text_alignment(temperature_layer, GTextAlignmentCenter);
     layer_add_child(window_layer, text_layer_get_layer(temperature_layer));
-
-    // Can't wait to remove this
-    APP_LOG(
-        APP_LOG_LEVEL_INFO,
-        "Temperature is %d and conditions are %s. Isn't that neat?",
-        temperature,
-        conditions_text_buffer
-    );
 }
 
 /*
