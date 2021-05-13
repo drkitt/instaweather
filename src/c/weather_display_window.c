@@ -14,14 +14,25 @@ Contains the implementation for the weather display window
 // Possible values for the weather conditions
 typedef enum {
     GENERIC,
-    HEAVY_RAIN,
-    HEAVY_SNOW,
     LIGHT_RAIN,
-    LIGHT_SNOW,
+    HEAVY_RAIN,
+    SNOW,
     PARTLY_CLOUDY,
     SUNNY,
     NUM_CONDITIONS
 } Condition;
+
+/* Static constants */
+// Maps the enum values above (implicitly converted to ints) to the
+// corresponding icon
+static const int ICONS[NUM_CONDITIONS] = {
+    RESOURCE_ID_ICON_GENERIC_WEATHER,
+    RESOURCE_ID_ICON_LIGHT_RAIN,
+    RESOURCE_ID_ICON_HEAVY_RAIN,
+    RESOURCE_ID_ICON_SNOW,
+    RESOURCE_ID_ICON_PARTLY_CLOUDY,
+    RESOURCE_ID_ICON_SUNNY
+};
 
 /* Static variables */
 // Displays the temperature
@@ -106,8 +117,7 @@ static void appear(Window *window) {
     load_conditions_buffer(conditions_text_buffer, STORED_BUFFER_SIZE);
     const int conditions_id = load_conditions_id();
     const Condition condition = get_conditions(conditions_id);
-    APP_LOG(APP_LOG_LEVEL_DEBUG, "%d", condition);
-    // conditions_icon = gdraw_command_image_create_with_resource(resource_id);
+    conditions_icon = gdraw_command_image_create_with_resource(ICONS[condition]);
 
     // Set up window
     Layer *window_layer = window_get_root_layer(window);
@@ -175,7 +185,7 @@ static Condition get_conditions(int id) {
         condition = HEAVY_RAIN;
     }
     else if (id <= 699) {
-        condition = HEAVY_SNOW;
+        condition = SNOW;
     }
     else if (id <= 799) {
         condition = GENERIC;
