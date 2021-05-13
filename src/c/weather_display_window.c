@@ -58,9 +58,6 @@ Window *weather_display_window_create(void) {
         .appear = appear,
     });
 
-    // Test code for icon drawing - hopefully this can eventually go in the appear function to allow for conditional rendering based on the conditions
-    conditions_icon = gdraw_command_image_create_with_resource(RESOURCE_ID_ICON_GENERIC_WEATHER);
-
     return new_window;
 }
 
@@ -107,6 +104,10 @@ static void appear(Window *window) {
     const int temperature = load_temperature();
     static char conditions_text_buffer[STORED_BUFFER_SIZE];
     load_conditions_buffer(conditions_text_buffer, STORED_BUFFER_SIZE);
+    const int conditions_id = load_conditions_id();
+    const Condition condition = get_conditions(conditions_id);
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "%d", condition);
+    // conditions_icon = gdraw_command_image_create_with_resource(resource_id);
 
     // Set up window
     Layer *window_layer = window_get_root_layer(window);
@@ -160,8 +161,34 @@ static void conditions_icon_layer_update(Layer *layer, GContext *context) {
 // Gets the enum value for the current conditions
 
 Parameters:
-    id: Number denoting the conditions
+    id: Number from the API denoting the conditions
 */
 static Condition get_conditions(int id) {
-    return GENERIC;
+    Condition condition;
+    if (id <= 299) {
+        condition = HEAVY_RAIN;
+    }
+    else if (id <= 399) {
+        condition = LIGHT_RAIN;
+    }
+    else if (id <= 599) {
+        condition = HEAVY_RAIN;
+    }
+    else if (id <= 699) {
+        condition = HEAVY_SNOW;
+    }
+    else if (id <= 799) {
+        condition = GENERIC;
+    }
+    else if (id == 800) {
+        condition = SUNNY;
+    }
+    else if (id <= 899) {
+        condition = PARTLY_CLOUDY;
+    }
+    else {
+        condition = GENERIC;
+    }
+
+    return condition;
 }
