@@ -161,7 +161,7 @@ Parameters:
 */
 static void conditions_icon_layer_update(Layer *layer, GContext *context) {
     // Set the origin offset from the context for drawing the image
-    GPoint origin = GPoint(47, 20);
+    GPoint origin = GPoint(PBL_IF_ROUND_ELSE(65, 47), 20);
 
     // Draw the GDrawCommandImage to the GContext
     gdraw_command_image_draw(context, conditions_icon, origin);
