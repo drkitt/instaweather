@@ -22,27 +22,6 @@ typedef enum {
     NUM_CONDITIONS
 } Condition;
 
-/* Static constants */
-// Maps the enum values above (implicitly converted to ints) to the
-// corresponding icon
-static const int ICONS[NUM_CONDITIONS] = {
-    RESOURCE_ID_ICON_GENERIC_WEATHER,
-    RESOURCE_ID_ICON_LIGHT_RAIN,
-    RESOURCE_ID_ICON_HEAVY_RAIN,
-    RESOURCE_ID_ICON_SNOW,
-    RESOURCE_ID_ICON_PARTLY_CLOUDY,
-    RESOURCE_ID_ICON_SUNNY
-};
-// Maps those same enum values to background colours
-static const GColor COLOURS[NUM_CONDITIONS] = {
-    GColorLightGray,
-    GColorElectricUltramarine,
-    GColorLiberty,
-    GColorWhite,
-    GColorElectricBlue,
-    GColorYellow
-};
-
 /* Static variables */
 // Displays the temperature
 static TextLayer *temperature_layer;
@@ -52,8 +31,6 @@ static TextLayer *conditions_text_layer;
 static GDrawCommandImage *conditions_icon;
 // Displays the conditions icon
 static Layer *conditions_icon_layer;
-// Gets the icon corresponding to the current conditions
-
 
 /* Static prototypes */
 // Callback for loading the window
@@ -66,6 +43,10 @@ static void appear(Window *window);
 static void conditions_icon_layer_update(Layer *layer, GContext *context);
 // Gets the enum value for the current conditions
 static Condition get_conditions(int id);
+// Gets the icon for the current condition's enum value
+static GDrawCommandImage *get_conditions_icon(Condition conditions);
+// Gets the background colour for the current condition's enum value
+static GColor get_background_colour(Condition conditions);
 
 /*
 Sets up a window and returns a pointer to it.
@@ -127,15 +108,13 @@ static void appear(Window *window) {
     static char conditions_text_buffer[STORED_BUFFER_SIZE];
     load_conditions_buffer(conditions_text_buffer, STORED_BUFFER_SIZE);
     const int conditions_id = load_conditions_id();
-    const Condition condition = get_conditions(conditions_id);
-    conditions_icon = gdraw_command_image_create_with_resource(
-      ICONS[condition]);
+    const Condition conditions = get_conditions(conditions_id);
+    conditions_icon = get_conditions_icon(conditions);
 
     // Set up window
     Layer *window_layer = window_get_root_layer(window);
     const GRect bounds = layer_get_bounds(window_layer);
-    window_set_background_color(
-        window, PBL_IF_COLOR_ELSE(COLOURS[condition], GColorWhite));
+    window_set_background_color(window, get_background_colour(conditions));
 
     // Display conditions icon layer
     conditions_icon_layer = layer_create(
@@ -214,4 +193,54 @@ static Condition get_conditions(int id) {
     }
 
     return condition;
+}
+
+/*
+Fancy mapping from enum conditions values to the icons that represent them
+
+Parameters:
+    conditions: Enum value representing the current weather conditions
+Returns: Pointer to the icon for the given conditions
+*/
+static GDrawCommandImage *get_conditions_icon(Condition conditions) {
+    int icon;
+    switch (conditions) {
+        case LIGHT_RAIN:    icon = RESOURCE_ID_ICON_LIGHT_RAIN;     break;
+        case HEAVY_RAIN:    icon = RESOURCE_ID_ICON_HEAVY_RAIN;     break;
+        case SNOW:          icon = RESOURCE_ID_ICON_SNOW;           break;
+        case PARTLY_CLOUDY: icon = RESOURCE_ID_ICON_PARTLY_CLOUDY;  break;
+        case SUNNY:         icon = RESOURCE_ID_ICON_SUNNY;          break;
+        default:            icon = RESOURCE_ID_ICON_GENERIC_WEATHER;break;
+    }
+
+    return gdraw_command_image_create_with_resource(icon);
+}
+
+/*
+Slightly-less-fancy mapping from enum conditions values to the background
+colours that go along with them
+
+Parameters:
+    conditions: Enum value representing the current weather conditions
+Returns: The current conditions' background colour if the watch has a colour
+    screen, otherwise GColorWhite
+*/
+static GColor get_background_colour(Condition conditions) {
+    GColor colour;
+    #if defined(PBL_COLOR)
+        APP_LOG(APP_LOG_LEVEL_DEBUG, "Operating on a colour screen");
+        switch (conditions) {
+            case LIGHT_RAIN:    colour = GColorElectricUltramarine; break;
+            case HEAVY_RAIN:    colour = GColorLiberty;             break;
+            case SNOW:          colour = GColorWhite;               break;
+            case PARTLY_CLOUDY: colour = GColorElectricBlue;        break;
+            case SUNNY:         colour = GColorYellow;              break;
+            default:            colour = GColorLightGray;           break;
+        }
+    #else
+        APP_LOG(APP_LOG_LEVEL_DEBUG, "Operating on a black & white screen");
+        colour = GColorWhite;
+    #endif
+
+    return colour;
 }
