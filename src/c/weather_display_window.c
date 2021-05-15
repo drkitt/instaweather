@@ -33,6 +33,15 @@ static const int ICONS[NUM_CONDITIONS] = {
     RESOURCE_ID_ICON_PARTLY_CLOUDY,
     RESOURCE_ID_ICON_SUNNY
 };
+// Maps those same enum values to background colours
+static const GColor COLOURS[NUM_CONDITIONS] = {
+    GColorLightGray,
+    GColorElectricUltramarine,
+    GColorLiberty,
+    GColorWhite,
+    GColorElectricBlue,
+    GColorYellow
+};
 
 /* Static variables */
 // Displays the temperature
@@ -43,6 +52,8 @@ static TextLayer *conditions_text_layer;
 static GDrawCommandImage *conditions_icon;
 // Displays the conditions icon
 static Layer *conditions_icon_layer;
+// Gets the icon corresponding to the current conditions
+
 
 /* Static prototypes */
 // Callback for loading the window
@@ -117,12 +128,14 @@ static void appear(Window *window) {
     load_conditions_buffer(conditions_text_buffer, STORED_BUFFER_SIZE);
     const int conditions_id = load_conditions_id();
     const Condition condition = get_conditions(conditions_id);
-    conditions_icon = gdraw_command_image_create_with_resource(ICONS[condition]);
+    conditions_icon = gdraw_command_image_create_with_resource(
+      ICONS[condition]);
 
     // Set up window
     Layer *window_layer = window_get_root_layer(window);
     const GRect bounds = layer_get_bounds(window_layer);
-    window_set_background_color(window, GColorWhite);
+    window_set_background_color(
+        window, PBL_IF_COLOR_ELSE(COLOURS[condition], GColorWhite));
 
     // Display conditions icon layer
     conditions_icon_layer = layer_create(
