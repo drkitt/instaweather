@@ -32,14 +32,17 @@ static void init(void) {
     tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
 }
 
-/* Deinitializes the worker */
+/*
+Deinitializes the worker
+*/
 static void deinit(void) {
-
+    tick_timer_service_unsubscribe();
 }
 
 /*
 Called periodically according to the tick timer service. Updates wheather
 info.
+
 Parameters (which are mostly just here to satisfy the tick timer service's
 interface):
     tick_time: Contains the current time

@@ -50,8 +50,7 @@ static void init(void) {
         // If the app was launched by the user, just display the weather :)
         APP_LOG(
             APP_LOG_LEVEL_INFO,
-            "Launched somehow other than by worker (most likely by user)"
-        );
+            "Launched somehow other than by worker (most likely by user)");
         main_window = weather_display_window_create();
     }
 

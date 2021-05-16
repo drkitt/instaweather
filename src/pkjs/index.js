@@ -3,11 +3,14 @@ This code will be ran on the phone. It fetches data from the OpenWeatherMap API
 and sends it to the watch
 */
 
-// Used to communicate with OpenWeatherMap
+// Used to communicate with OpenWeatherMap. Since this is a small-scale project,
+// I'm hard-coding my own API key, but a nice "version 2" feature would be to
+// let a user supply their own key.
 const MY_API_KEY = '9a7868c2beb4f4d09ad6d9fe3c00bdc5';
 
 /*
 Simplifies the process of sending an XMLHttpRequest to OpenWeatherMap
+
 Parameters:
     url: The API enpoint to send a request to
     type: The type of request
@@ -22,7 +25,9 @@ function xhrRequest(url, type, callback) {
     xhr.send();
 }
 
-/* Called when the user's location is known
+/*
+Fetches weather from the API when the user's location is known
+
 Parameters:
     pos: User location
 */
@@ -71,7 +76,9 @@ function locationSuccess(pos) {
     );
 }
 
-/* Called when something goes wrong in finding the user's location
+/*
+Called when something goes wrong in finding the user's location
+
 Parameters:
 err: The error that occurred
 */
@@ -79,7 +86,9 @@ function locationError(err) {
     console.log('Error requesting location!');
 }
 
-// Gets weather information
+/*
+Gets weather information
+*/
 function getWeather() {
     navigator.geolocation.getCurrentPosition(
         locationSuccess,

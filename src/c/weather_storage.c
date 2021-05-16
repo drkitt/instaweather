@@ -19,9 +19,10 @@ bool saved_data_exists(void) {
 
 /*
 Gets the temperature from persistent storage
-    Returns: The temperature :]
-        ...Or -1 if there's no temperature data saved
-        (shoulda called saved_data_exists first!)
+
+Returns: The temperature :]
+    ...Or -1 if there's no temperature data saved
+    (shoulda called saved_data_exists first!)
 */
 int load_temperature(void) {
     return persist_exists(TEMPERATURE_KEY) ? persist_read_int(TEMPERATURE_KEY)
@@ -30,6 +31,7 @@ int load_temperature(void) {
 
 /*
 Gets the conditions buffer from persistent storage
+
 Parameters:
     conditions_buffer: String that this function will write the weather
         conditions from persistent storage to. If no such data exists, it
@@ -63,6 +65,7 @@ int load_conditions_id() {
 
 /*
 Saves the temperature to persistent storage
+
 Parameters:
     temperature: The value to save
 */
@@ -72,6 +75,7 @@ void save_temperature(const int temperature) {
 
 /*
 Saves the conditions buffer to parsistent storage
+
 Parameters:
     conditions_buffer: String to write to persistent storage
 

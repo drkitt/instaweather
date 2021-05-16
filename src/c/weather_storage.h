@@ -20,26 +20,21 @@ bringing weather data in and out of persistent storage.
 // Size of a string stored in local storage
 #define STORED_BUFFER_SIZE 32
 
+/* Prototypes */
 // Tells whether there's any saved weather data
 bool saved_data_exists(void);
-
 // Gets the temperature from persistent storage
 int load_temperature(void);
-
 // Gets the conditions buffer from persistent storage
 void load_conditions_buffer(
     char *conditions_buffer, int conditions_buffer_size);
-
 // Gets the conditions id from persistent storage
 int load_conditions_id();
-
 // Saves the temperature to persistent storage
 void save_temperature(const int temperature);
-
 // Saves the conditions buffer to persistent storage
 void save_conditions_buffer(const char *conditions_buffer);
-
 // Saves the conditions id to persistent storage
 void save_conditions_id(const int conditions_id);
 
-#endif /* end of include guard: WEATHER_STORAGE_H */
+#endif

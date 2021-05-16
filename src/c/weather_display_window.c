@@ -78,7 +78,7 @@ static void load(Window *window) {
         window_stack_push(loading_window, true);
     }
     // Otherwise, the window's appear method will do all the meaninful
-    // initialization
+    // initialization.
 }
 
 /*

@@ -26,6 +26,7 @@ static void outbox_failed_callback(
 
 /*
 Fetches the weather!
+
 Parameters:
     window: Pointer to the window from which this function was called.
         It's saved for the callback to access, so if the function that
@@ -54,6 +55,7 @@ void fetch_weather(Window *window, OnFetched p_callback) {
 
 /*
 Callback for receiving an AppMessage
+
 Parameters:
     iterator: Points to the contents of the received message
     context: Pointer to application data from when the callback was registered
@@ -117,6 +119,7 @@ static void inbox_received_callback(
 
 /*
 Callback for dropping an AppMessage
+
 Parameters:
     reason: Why the message was dropped
     context: Pointer to application data from when the callback was registered
@@ -127,6 +130,7 @@ static void inbox_dropped_callback(AppMessageResult reason, void *context) {
 
 /*
 Callback for sending an AppMessage
+
 Parameters:
     iterator: Points to the contents of the sent message
     context: Pointer to application data from when the callback was registered
@@ -137,6 +141,7 @@ static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
 
 /*
 Callback for failing to send an AppMessage
+
 Parameters:
     iterator: Points to the contents of the non-sent message
     reason: Why the message didn't send

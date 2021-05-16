@@ -32,7 +32,8 @@ typedef void (*OnFetched)(
     const int conditions_id
 );
 
+/* Prototypes */
 // Fetches the weather (amazing!)
 void fetch_weather(Window *window, OnFetched p_callback);
 
-#endif /* end of include guard: WEATHER_FETCH_H */
+#endif
