@@ -29,7 +29,7 @@ Initializes the worker
 */
 static void init(void) {
     // Register with the tick timer service in order to update periodically
-    tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
+    tick_timer_service_subscribe(HOUR_UNIT, tick_handler);
 }
 
 /*
