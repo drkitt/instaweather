@@ -1,12 +1,12 @@
 {
-  "name": "instant-weather",
+  "name": "Instant Weather",
   "author": "drkitt",
   "version": "1.0.0",
   "keywords": ["pebble-app"],
   "private": true,
   "dependencies": {},
   "pebble": {
-    "displayName": "instant-weather",
+    "displayName": "InstantWeather",
     "uuid": "12501e34-731a-4b23-8791-6e351b124572",
     "sdkVersion": "3",
     "enableMultiJS": true,
