@@ -28,6 +28,9 @@ static void on_fetch(
     const char *conditions_buffer,
     const int conditions_id
 );
+// Callback for updating the app glance
+static void update_app_glance(
+    AppGlanceReloadSession *session, size_t limit, void *context);
 
 /*
 Sets up a window and returns a pointer to it.
@@ -96,10 +99,60 @@ static void on_fetch(
     const char *conditions_buffer,
     const int conditions_id
 ) {
-
+    // Save the loaded data
     save_temperature(temperature);
     save_conditions_buffer(conditions_buffer);
     save_conditions_id(conditions_id);
 
+    // Also display it on the app launcher
+    char app_glance_buffer[STORED_BUFFER_SIZE];
+    snprintf(
+        app_glance_buffer,
+        STORED_BUFFER_SIZE,
+        "%d°C / %s",
+        temperature,
+        conditions_buffer
+    );
+    app_glance_reload(update_app_glance, app_glance_buffer);
+
+    // Self-destruct
     window_stack_remove(window, true);
+}
+
+/*
+Called when updating the app glance, which is a text field below the app icon
+
+Parameters:
+    session: Pointer to object used to tell whether we can currently write
+        the app glance
+    limit: The number of entries that can be added to the app glance
+    context: Pointer to application data from when the callback was registered.
+        In this case, it contains the string to write to the glance.
+*/
+static void update_app_glance(
+    AppGlanceReloadSession *session, size_t limit, void *context) {
+
+    // Avoid writing to app glance if that funcationality is unsupported on the
+    // watch
+    if (limit < 1) return;
+
+    // Cast the context to a string
+    const char *message = context;
+
+    // Create the AppGlanceSlice
+    const AppGlanceSlice entry = (AppGlanceSlice) {
+        .layout = {
+            .subtitle_template_string = message
+        },
+        // Expire the glance after an hour. Since the weather info is updated
+        // hourly, this being blank is a clue to the user that something has
+        // gone wrong!
+        .expiration_time = time(NULL) + (SECONDS_PER_MINUTE * SECONDS_PER_HOUR)
+    };
+
+    // Add the slice and check the result
+    const AppGlanceResult result = app_glance_add_slice(session, entry);
+    if (result != APP_GLANCE_RESULT_SUCCESS) {
+        APP_LOG(APP_LOG_LEVEL_ERROR, "AppGlance error: %d", result);
+    }
 }
