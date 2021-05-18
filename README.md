@@ -1,4 +1,4 @@
-![Instaweather app banner](Publishing/Store banner.png)
+![Instaweather app banner](Publishing/Store%20banner.png)
 
 ## What is it?
 
@@ -6,7 +6,7 @@ Instaweather is a lightning-fast weather app for the totally-retro Pebble smartw
 
 
 
-![Framed colour screenshot](Publishing/Framed colour screenshot.png)  ![Framed circular screenshot](Publishing/Framed circular screenshot.png) ![Framed app glance](Publishing/Framed app glance.png) 
+![Framed colour screenshot](Publishing/Framed%20colour%20screenshot.png)  ![Framed circular screenshot](Publishing/Framed%20circular%20screenshot.png) ![Framed app glance](Publishing/Framed%20app%20glance.png) 
 
 As a bonus, the cached weather data shows up on the app launcher too, so you can check the weather without even opening the app. It's even more instant than instant!
 
