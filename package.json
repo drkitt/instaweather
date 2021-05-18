@@ -6,7 +6,7 @@
   "private": true,
   "dependencies": {},
   "pebble": {
-    "displayName": "InstantWeather",
+    "displayName": "Instaweather",
     "uuid": "12501e34-731a-4b23-8791-6e351b124572",
     "sdkVersion": "3",
     "enableMultiJS": true,
