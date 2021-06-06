@@ -132,7 +132,7 @@ Parameters:
 static void update_app_glance(
     AppGlanceReloadSession *session, size_t limit, void *context) {
 
-    // Avoid writing to app glance if that funcationality is unsupported on the
+    // Avoid writing to app glance if that functionality is unsupported on the
     // watch
     if (limit < 1) return;
 
@@ -147,7 +147,7 @@ static void update_app_glance(
         // Expire the glance after an hour. Since the weather info is updated
         // hourly, this being blank is a clue to the user that something has
         // gone wrong!
-        .expiration_time = time(NULL) + (SECONDS_PER_MINUTE * SECONDS_PER_HOUR)
+        .expiration_time = time(NULL) + SECONDS_PER_HOUR
     };
 
     // Add the slice and check the result
