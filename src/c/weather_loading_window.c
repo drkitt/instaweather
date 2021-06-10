@@ -12,9 +12,16 @@ then closes.
 // Weather saving and loading
 #include "weather_storage.h"
 
+/* Constants */
+// Time between attempted fetches
+#define TIMEOUT 1000 * SECONDS_PER_MINUTE
+
 /* Static variables */
 // Displays a status message to the user
 static TextLayer *status_layer;
+// Keeps track of how much time has passed since starting the weather fetch and
+// retries the fetch if necessary
+static AppTimer *retry_timer;
 
 /* Static prototypes */
 // Callback for loading the window
@@ -31,6 +38,8 @@ static void on_fetch(
 // Callback for updating the app glance
 static void update_app_glance(
     AppGlanceReloadSession *session, size_t limit, void *context);
+// Callback for retrying the weather fetch
+static void on_retry(void *data);
 
 /*
 Sets up a window and returns a pointer to it.
@@ -72,6 +81,8 @@ static void load(Window *window) {
 
     // The "weather loading" part
     fetch_weather(window, on_fetch);
+    // If we don't hear back soon enough, try again
+    retry_timer = app_timer_register(TIMEOUT, on_retry, window);
 }
 
 /*
@@ -116,6 +127,7 @@ static void on_fetch(
     app_glance_reload(update_app_glance, app_glance_buffer);
 
     // Self-destruct
+    app_timer_cancel(retry_timer);
     window_stack_remove(window, true);
 }
 
@@ -154,5 +166,28 @@ static void update_app_glance(
     const AppGlanceResult result = app_glance_add_slice(session, entry);
     if (result != APP_GLANCE_RESULT_SUCCESS) {
         APP_LOG(APP_LOG_LEVEL_ERROR, "AppGlance error: %d", result);
+    }
+}
+
+/*
+Called when the weather fetch hasn't worked for a minute
+
+Parameters:
+    data: Data specified when the callback registered. In this case, it should
+        be a pointer to the loading window.
+*/
+static void on_retry(void *data) {
+    // Check whether we need to retry. If the topmost window is the loading
+    // window, that means that the weather data hasn't been successfully
+    // fetched.
+    if (window_stack_get_top_window() == data) {
+        text_layer_set_text(status_layer,
+            "Couldn't update weather info.\n"
+            "Trying again...\n"
+            "\n"
+            "You may need to close this app\n"
+            "and restart the Pebble app on your phone."
+        );
+        fetch_weather(data, on_fetch);
     }
 }
