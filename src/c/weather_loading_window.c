@@ -69,7 +69,7 @@ static void load(Window *window) {
 
     // Set up status message
     window_set_background_color(window, GColorBlack);
-    status_layer = text_layer_create(GRect(0, 36, bounds.size.w, 60));
+    status_layer = text_layer_create(GRect(0, 36, bounds.size.w, 120));
     text_layer_set_text_color(status_layer, GColorWhite);
     text_layer_set_background_color(status_layer, GColorClear);
     text_layer_set_text(status_layer,
@@ -185,7 +185,7 @@ static void on_retry(void *data) {
             "Couldn't update weather info.\n"
             "Trying again...\n"
             "\n"
-            "You may need to close this app\n"
+            "You may need to close this app "
             "and restart the Pebble app on your phone."
         );
         fetch_weather(data, on_fetch);
