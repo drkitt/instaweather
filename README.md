@@ -14,7 +14,7 @@ As a bonus, the cached weather data shows up on the app launcher too, so you can
 
 ## How do I get it?
 
-If you have a Pebble, you'll soon be able to get this app for free on the Pebble app store! It's currently in the review process, but when it's approved, all Pebble models will be supported. In the meantime (or if you don't have a Pebble), you can still run it in an emulator if you set up the Pebble development environment. Follow the instructions [here](https://github.com/andb3/pebble-setup/blob/main/README.md), clone this repository, and run the command `pebble build && pebble install --emulator basalt`.
+If you have a Pebble, you can get this app for free on the Pebble app store! All Pebble models are supported. You can also sideload the `Publishing/instaweather.pbw` file from this repository onto your Pebble if you prefer. If you don't have a Pebble, you can still run it in an emulator if you set up the Pebble development environment. Follow the instructions [here](https://github.com/andb3/pebble-setup/blob/main/README.md), clone this repository, and run the command `pebble build && pebble install --emulator basalt`.
 
 
 
